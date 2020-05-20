@@ -15,11 +15,11 @@ async def on_ready():
 @bot.command()
 async def arc9p(ctx):
     random_song = random.choice(jdata["arc9+songs"])
-    await ctx.send(f'選擇困難症喵?讓本喵來幫你喵:\n{random_song}喵!!') 
+    await ctx.send(f'選擇困難症喵?讓本喵來幫你喵:\n{random_song}') 
 
 @bot.command()
 async def arc10(ctx):
     random_song = random.choice(jdata["arc10songs"])
-    await ctx.send(f'選擇困難症喵?讓本喵來幫你喵:\n{random_song}喵!!')  
+    await ctx.send(f'選擇困難症喵?讓本喵來幫你喵:\n{random_song}')  
 
 bot.run(jdata["TOKEN"])
