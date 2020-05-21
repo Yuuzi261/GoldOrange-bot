@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import json
 import random
+import os
 
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
@@ -12,14 +13,9 @@ bot = commands.Bot(command_prefix= 'c!')
 async def on_ready():
     print(">> Bot is online <<")
 
-@bot.command()
-async def arc9p(ctx):
-    random_song = random.choice(jdata["arc9+songs"])
-    await ctx.send(f'選擇困難症喵?讓本喵來幫你喵:\n{random_song}') 
+for filename in os.listdir('./cmds'):
+    if filename.endswith('.py'):
+        bot.load_extension(f'cmds.{filename[:-3]}') 
 
-@bot.command()
-async def arc10(ctx):
-    random_song = random.choice(jdata["arc10songs"])
-    await ctx.send(f'選擇困難症喵?讓本喵來幫你喵:\n{random_song}')  
-
-bot.run(jdata["TOKEN"])
+if __name__ == "__main__":
+    bot.run(jdata["TOKEN"])
