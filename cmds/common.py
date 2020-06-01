@@ -18,6 +18,11 @@ class Common(Cog_Extension):
         random_result = random.choice(jdata["mora"])
         await ctx.send(f'本喵贏定了喵~\n{random_result}') 
 
+    @commands.command()
+    async def choice(self, ctx, *, songs):
+        result = random.choice(songs)
+        await ctx.send(f'本喵決定選 **{result}** 喵~')
+
 
 def setup(bot):
     bot.add_cog(Common(bot))
