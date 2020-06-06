@@ -19,7 +19,7 @@ class Common(Cog_Extension):
         await ctx.send(f'本喵贏定了喵~\n{random_result}') 
 
     @commands.command()
-    async def choice(self, ctx, *, songs):
+    async def choice(self, ctx, *songs):
         result = random.choice(songs)
         await ctx.send(f'本喵決定選 **{result}** 喵~')
 
@@ -31,6 +31,20 @@ class Common(Cog_Extension):
     async def say(self, ctx, *, msg):
         await ctx.message.delete()
         await ctx.send(msg)
+
+    @commands.command()
+    async def rand_squad(self, ctx, num_of_people, role):
+        num = num_of_people
+        people = []
+        role = str(role)
+        role = role[3:21]
+        for member in ctx.guild.members:
+            for r in member.roles:
+                r = str(r.id)
+                if role in r:
+                    people.append(member.name)
+                
+
 
 def setup(bot):
     bot.add_cog(Common(bot))
