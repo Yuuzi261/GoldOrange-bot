@@ -33,13 +33,27 @@ class Common(Cog_Extension):
         await ctx.send(msg)
 
     @commands.command()
-    async def rand_squad(self, ctx, num_of_people, role: discord.Role):
-        num = num_of_people
-        people = []
-        for member in ctx.guild.members:
-            if role in member.roles:
-                people.append(member.name)
-        print(people)
+    async def rand_squad(self, ctx, num_of_people, group_amount, role: discord.Role):
+        num = int(num_of_people)
+        gamount = int(group_amount)
+        if num % gamount == 0:
+            people = []
+            for member in ctx.guild.members:
+                if role in member.roles:
+                    people.append(member.name)
+        
+            selected_people = random.sample(people, k=num)
+
+            for squad in range(gamount):
+                a = random.sample(selected_people, k = (num//gamount))
+                msg = " "
+                for name in a:
+                    msg = msg + name + ' , '
+                await ctx.send(f'第**{squad+1}**小隊:' + msg[:-3])
+                for name in a:
+                    selected_people.remove(name)
+        else:
+            await ctx.send("請輸入合理的分組喵~")
                 
 
 
