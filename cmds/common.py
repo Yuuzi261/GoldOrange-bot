@@ -23,10 +23,14 @@ class Common(Cog_Extension):
         result = random.choice(songs)
         await ctx.send(f'本喵決定選 **{result}** 喵~')
 
-    @commands.command
+    @commands.command()
     async def spthx(self, ctx):
         await ctx.send("```\n【特別感謝】\n本喵的主要開發者是 金桔 喵~\n目前沒有其它的共同開發者喵！\n特別感謝以下的人協助開發喵(ㆁωㆁ)\n•Proladon以及其他所有SHELTER ZONE的大佬\n    感謝協助Debug以及提供教學喵\n•小杰\n    感謝提供arcaea所有歌曲圖片喵\n•最後感謝所有群內幫助測試以及提供意見的人員喵\n```")
 
+    @commands.command()
+    async def say(self, ctx, *, msg):
+        await ctx.message.delete()
+        await ctx.send(msg)
 
 def setup(bot):
     bot.add_cog(Common(bot))
