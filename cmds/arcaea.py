@@ -26,6 +26,12 @@ class Arcaea(Cog_Extension):
     async def arcbomb(self, ctx, amount, *difficulty):
         amount = int(amount)
         if 1 < amount <= 5:
+          
+            if (amount == 5) and (len(difficulty) == 1) and (difficulty[0] == "11"):
+                await ctx.send("11級只有4首喵~\n")
+                await ctx.send("<:Gcat3:711805083695710228>")
+                return
+            
             songs = []
 
             if "all" in difficulty or "ALL" in difficulty:
