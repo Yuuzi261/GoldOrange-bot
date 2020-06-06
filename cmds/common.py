@@ -33,16 +33,13 @@ class Common(Cog_Extension):
         await ctx.send(msg)
 
     @commands.command()
-    async def rand_squad(self, ctx, num_of_people, role):
+    async def rand_squad(self, ctx, num_of_people, role: discord.Role):
         num = num_of_people
         people = []
-        role = str(role)
-        role = role[3:21]
         for member in ctx.guild.members:
-            for r in member.roles:
-                r = str(r.id)
-                if role in r:
-                    people.append(member.name)
+            if role in member.roles:
+                people.append(member.name)
+        print(people)
                 
 
 
