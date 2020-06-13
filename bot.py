@@ -14,14 +14,16 @@ async def on_ready():
     print(">> Bot is online <<")
     
 @bot.event
-async def on_member_join(member):
-    channel = bot.get_channel(509693136247848961)
-    await channel.send(f"**{member}**歡迎喵~")
+async def on_member_join(member: discord.Member):
+    if member.guild.id == jdata["sever_ID"]:
+        channel = bot.get_channel(jdata["welcome_channel"])
+        await channel.send(f"**{member}**歡迎喵~")
 
 @bot.event
-async def on_member_remove(member):
-    channel = bot.get_channel(509693136247848961)
-    await channel.send(f"抓到了喵!!**{member}**在偷尻喵~")
+async def on_member_remove(member: discord.Member):
+    if member.guild.id == jdata["sever_ID"]:
+        channel = bot.get_channel(jdata["welcome_channel"])
+        await channel.send(f"抓到了喵!!**{member}**在偷尻喵~")
 
 @bot.command()
 @commands.is_owner()
