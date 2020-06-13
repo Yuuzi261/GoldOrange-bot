@@ -15,7 +15,14 @@ class Common(Cog_Extension):
 
     @commands.command()
     async def spthx(self, ctx):
-        await ctx.send("```\n【特別感謝】\n本喵的主要開發者是 金桔 喵~\n目前沒有其它的共同開發者喵！\n特別感謝以下的人協助開發喵(ㆁωㆁ)\n•Proladon以及其他所有SHELTER ZONE的大佬\n    感謝協助Debug以及提供教學喵\n•小杰\n    感謝提供arcaea所有歌曲圖片喵\n•最後感謝所有群內幫助測試以及提供意見的人員喵\n```")
+        embed=discord.Embed(title="【特別感謝】", description="協助開發者一覽", color=0xffe26f)
+        embed.set_thumbnail(url="https://i.imgur.com/pms8YGV.png")
+        embed.add_field(name="**本喵的主要開發者是 金桔 喵~**", value="目前沒有其它的共同開發者喵！\n特別感謝以下的人協助開發喵(ㆁωㆁ)", inline=False)
+        embed.add_field(name="**•Proladon以及其他所有SHELTER ZONE的大佬**", value="感謝協助Debug以及提供教學喵", inline=False)
+        embed.add_field(name="**•小杰**", value="感謝提供arcaea所有歌曲圖片喵", inline=False)
+        embed.add_field(name="**•所有參與測試人員**", value="感謝所有群內幫助測試以及提供意見的人員喵", inline=True)
+        embed.set_footer(text="Programmer : 金桔")
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def say(self, ctx, *, msg):
