@@ -12,11 +12,36 @@ class Arcaea(Cog_Extension):
 
     @commands.command()
     async def arc(self, ctx, *difficulty):
+        allist = ["7", "8", "9", "9+", "10", "10+", "11"]
+        diffs = []
+        temp = []
+        boo = False
+        for x in difficulty:
+            diffs.append(x)
+
+        for x in diffs:
+            if x not in allist:
+                boo = True
+                temp.append(x)
+
+        diffs = list(set(diffs).difference(set(temp)))
+
+        if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
+            embed=discord.Embed(title="錯誤排除", color=0xffe26f)
+            embed.add_field(name=".arc", value="請輸入合理的難度喵~(7 ~ 11)", inline=False)
+            await ctx.send(embed=embed)
+            return
+
         if "all" in difficulty or "ALL" in difficulty:
-            allist = ["7", "8", "9", "9+", "10", "10+", "11"]
             resultdiff = random.choice(allist)
+            boo = False
         else:
-            resultdiff = random.choice(difficulty)
+            resultdiff = random.choice(diffs)
+        
+        if boo:
+            embed=discord.Embed(title="錯誤警告", color=0xffe26f)
+            embed.add_field(name=".arc", value="出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
+            await ctx.send(embed=embed)
             
         keyword = "arc" + resultdiff + "songs"
         random_song = random.choice(jdata[keyword])
@@ -24,10 +49,37 @@ class Arcaea(Cog_Extension):
 
     @commands.command()
     async def arcbomb(self, ctx, amount, *difficulty):
-        amount = int(amount)
+        try:
+            amount = int(amount)
+        except:
+            embed=discord.Embed(title="錯誤排除", color=0xffe26f)
+            embed.add_field(name=".arcbomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
+            await ctx.send(embed=embed)
+            return
+
         if 1 < amount <= 5:
-          
-            if (amount == 5) and (len(difficulty) == 1) and (difficulty[0] == "11"):
+
+            allist = ["7", "8", "9", "9+", "10", "10+", "11"]
+            diffs = []
+            temp = []
+            boo = False
+            for x in difficulty:
+                diffs.append(x)
+
+            for x in diffs:
+                if x not in allist:
+                    boo = True
+                    temp.append(x)
+
+            diffs = list(set(diffs).difference(set(temp)))
+
+            if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
+                embed=discord.Embed(title="錯誤排除", color=0xffe26f)
+                embed.add_field(name=".arcbomb", value="請輸入合理的難度喵~(7 ~ 11)", inline=False)
+                await ctx.send(embed=embed)
+                return
+
+            if (amount == 5) and (len(diffs) == 1) and (diffs[0] == "11"):
                 await ctx.send("11級只有4首喵~\n")
                 await ctx.send("<:Gcat3:711805083695710228>")
                 return
@@ -35,10 +87,15 @@ class Arcaea(Cog_Extension):
             songs = []
 
             if "all" in difficulty or "ALL" in difficulty:
-                allist = ["7", "8", "9", "9+", "10", "10+", "11"]
+                boo = False
                 nowdiff = random.choice(allist)
             else:
-                nowdiff = random.choice(difficulty)
+                nowdiff = random.choice(diffs)
+
+            if boo:
+                embed=discord.Embed(title="錯誤警告", color=0xffe26f)
+                embed.add_field(name=".arcbomb", value="出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
+                await ctx.send(embed=embed)
 
             nowkeyword = "arc" + nowdiff + "songs"
             now = random.choice(jdata[nowkeyword])
@@ -49,7 +106,7 @@ class Arcaea(Cog_Extension):
                     allist = ["7", "8", "9", "9+", "10", "10+", "11"]
                     nowdiff = random.choice(allist)
                 else:
-                    nowdiff = random.choice(difficulty)
+                    nowdiff = random.choice(diffs)
                 nowkeyword = "arc" + nowdiff + "songs"
                 now = random.choice(jdata[nowkeyword])
                 if now in songs:
