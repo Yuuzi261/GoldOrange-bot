@@ -45,7 +45,10 @@ class Arcaea(Cog_Extension):
             
         keyword = "arc" + resultdiff + "songs"
         random_song = random.choice(jdata[keyword])
-        await ctx.send(f'選擇困難症喵?讓本喵來幫你喵:\n{random_song}')
+
+        embed=discord.Embed(title="選擇困難症喵?", description="讓本喵來幫你喵:", color=0xffe26f)
+        embed.set_image(url=(random_song + '.jpg'))
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def arcbomb(self, ctx, amount, *difficulty):
@@ -116,12 +119,20 @@ class Arcaea(Cog_Extension):
                     i+=1
 
             i = 0
-            await ctx.send("選擇困難症喵?讓本喵來幫你喵:\n")
             for i in range(amount):
-                await ctx.send(f'{songs[i]}')
+                if i == 0:
+                    embed=discord.Embed(title="選擇困難症喵?", description="讓本喵來幫你喵:", color=0xffe26f)
+                else:
+                    embed=discord.Embed(color=0xffe26f)
+                random_song = songs[i]
+                embed.set_image(url=(random_song + '.jpg'))
+                await ctx.send(embed=embed)
 
         else:
-            await ctx.send("請輸入2 ~ 5的整數喵~")
+            embed=discord.Embed(title="錯誤排除", color=0xffe26f)
+            embed.add_field(name=".arcbomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
+            await ctx.send(embed=embed)
+            return
 
 
 def setup(bot):
