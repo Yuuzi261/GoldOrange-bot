@@ -86,7 +86,7 @@ async def on_command_error(ctx, error):
     embed=discord.Embed(title="ERROR", color=0xffe26f)
 
     if isinstance(error, commands.errors.CommandNotFound):
-        embed.add_field(name="指令錯誤", value="請不要講一些本喵聽不懂的話喵！", inline=False)
+        return
     elif isinstance(error, commands.errors.MissingRequiredArgument):
         embed.add_field(name="缺少必要參數", value="你什麼都不說是要本喵怎麼辦喵?", inline=False)
     elif isinstance(error, commands.errors.BadArgument):
