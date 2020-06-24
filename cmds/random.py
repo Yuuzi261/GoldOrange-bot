@@ -49,6 +49,16 @@ class Random(Cog_Extension):
         else:
             await ctx.send("請輸入合理的分組喵~")
 
+    @commands.command()
+    async def rn(self, ctx, amount: int, low: int, top: int):
+        embed=discord.Embed(title="隨機數字抽取", color=0xffe26f)
+        for i in range(amount):
+            r = random.randint(low, top)
+            embed.add_field(name=f'第**{i+1}**次結果:', value=r, inline=True)
+        
+        await ctx.send(embed=embed)
+
+
 
 def setup(bot):
     bot.add_cog(Random(bot))

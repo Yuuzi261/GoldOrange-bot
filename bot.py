@@ -67,6 +67,8 @@ async def help(ctx, *comad):
             embed.add_field(name="Random", value=".mora 猜拳", inline=False)
         elif comad[0] == 'rs':
             embed.add_field(name="Random", value=".rs <num_of_people> <group_amount> <role> 隨機分隊", inline=False)
+        elif comad[0] == 'rn':
+            embed.add_field(name="Random", value=".rn <amount> <low> <top> 指定區間內隨機數字抽取", inline=False)
         else:
             embed.add_field(name="Not Found", value="查無此指令", inline=False)
     
@@ -77,7 +79,7 @@ async def help(ctx, *comad):
         embed.set_thumbnail(url="https://i.imgur.com/pms8YGV.png")
         embed.add_field(name="Arcaea", value="arc | arcbomb", inline=False)
         embed.add_field(name="Common", value="member | mj | ping | say", inline=False)
-        embed.add_field(name="Random", value="choose | mora | rs", inline=False)
+        embed.add_field(name="Random", value="choose | mora | rs | rn", inline=False)
         embed.set_footer(text="使用.help <cmd>來查詢你想了解的指令")
         await ctx.send(embed=embed)
 
