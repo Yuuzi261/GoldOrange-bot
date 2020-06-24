@@ -11,7 +11,8 @@ class Common(Cog_Extension):
 
     @commands.command()
     async def ping(self, ctx):
-        await ctx.send(f'本喵現在的反應延遲是 **{round(self.bot.latency*1000)}** 毫秒，至少比你的頭腦還要快上 **{round(250/(self.bot.latency*1000),3)}** 倍喵(・∀・)')
+        embed=discord.Embed(title=f'本喵現在的反應延遲是 **{round(self.bot.latency*1000)}** 毫秒', description=f'至少比你的頭腦還要快上 **{round(250/(self.bot.latency*1000),3)}** 倍喵(・∀・)', color=0xffe26f)
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def spthx(self, ctx):
@@ -36,13 +37,17 @@ class Common(Cog_Extension):
             if not(member.bot):
                 people+=1
 
-        await ctx.send(f'本群現在有 **{people}** 人喵~')
+        embed=discord.Embed(title="伺服器人數統計",description = f'本群現在有 **{people}** 人喵~', color=0xffe26f)
+        embed.set_footer(text="人數已經自動扣除機器人的數量了喵~")
+        await ctx.send(embed=embed)
         
     @commands.command() 
     async def mj(self, ctx, name: discord.Member): 
         for member in ctx.guild.members:
             if member == name:
-                await ctx.send(f'{member} : {member.joined_at}')
+                embed=discord.Embed(title=f'{name}的加入時間',description = f'{member.joined_at}', color=0xffe26f)
+                embed.set_footer(text="顯示的時間為GMT標準時間喵~")
+                await ctx.send(embed=embed)
 
 
 def setup(bot):
