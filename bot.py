@@ -97,6 +97,7 @@ async def on_command_error(ctx, error):
         embed.add_field(name="呼叫指令時出現例外狀況", value="你...你...你...罰你去看.help喵!!", inline=False)
     else:
         embed.add_field(name="發生錯誤", value="本喵什麼都不知道喵~", inline=False)
+        embed.add_field(name="錯誤訊息", value=error, inline=False)
 
     embed.set_footer(text="使用.help <cmd>來查詢你想了解的指令")
     await ctx.send(embed=embed)
