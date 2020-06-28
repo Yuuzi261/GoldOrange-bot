@@ -29,6 +29,7 @@ class CytusII(Cog_Extension):
         if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
             embed=discord.Embed(title="錯誤排除", color=0xffe26f)
             embed.add_field(name=".c2", value="請輸入合理的難度喵~(8 ~ 15)", inline=False)
+            embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
 
@@ -57,6 +58,7 @@ class CytusII(Cog_Extension):
         except:
             embed=discord.Embed(title="錯誤排除", color=0xffe26f)
             embed.add_field(name=".c2bomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
+            embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
 
@@ -79,6 +81,7 @@ class CytusII(Cog_Extension):
             if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
                 embed=discord.Embed(title="錯誤排除", color=0xffe26f)
                 embed.add_field(name=".c2bomb", value="請輸入合理的難度喵~(8 ~ 15)", inline=False)
+                embed.set_image(url=(jdata["giraffe"]))
                 await ctx.send(embed=embed)
                 return
 
@@ -131,6 +134,7 @@ class CytusII(Cog_Extension):
         else:
             embed=discord.Embed(title="錯誤排除", color=0xffe26f)
             embed.add_field(name=".c2bomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
+            embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
 
