@@ -26,16 +26,21 @@ class Random(Cog_Extension):
     async def rs(self, ctx, num_of_people, group_amount, role: discord.Role):
         num = int(num_of_people)
         gamount = int(group_amount)
-        if num % gamount == 0:
-            people = []
-            for member in ctx.guild.members:
-                if role in member.roles:
-                    people.append(member.name)
+        boo = True
+        if num % gamount != 0:
+            #do something...
+            m = num%gamount
+            boo = False
+        people = []
+        for member in ctx.guild.members:
+            if role in member.roles:
+                people.append(member.name)
         
-            selected_people = random.sample(people, k=num)
+        selected_people = random.sample(people, k=num)
 
-            embed=discord.Embed(title="隨機分隊", color=0xffe26f)
+        embed=discord.Embed(title="隨機分隊", color=0xffe26f)
         
+        if boo:
             for squad in range(gamount):
                 a = random.sample(selected_people, k = (num//gamount))
                 msg = " "
@@ -44,10 +49,21 @@ class Random(Cog_Extension):
                 embed.add_field(name=f'第**{squad+1}**小隊:', value=msg[:-3], inline=False)
                 for name in a:
                     selected_people.remove(name)
-
-            await ctx.send(embed=embed)
         else:
-            await ctx.send("請輸入合理的分組喵~")
+            for squad in range(gamount):
+                if squad != (gamount-1):
+                    a = random.sample(selected_people, k = (num//gamount))
+                else:
+                    a = random.sample(selected_people, k = m)
+                    
+                msg = " "
+                for name in a:
+                    msg = msg + name + ' , '
+                embed.add_field(name=f'第**{squad+1}**小隊:', value=msg[:-3], inline=False)
+                for name in a:
+                    selected_people.remove(name)
+
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def rn(self, ctx, amount: int, low: int, top: int):
