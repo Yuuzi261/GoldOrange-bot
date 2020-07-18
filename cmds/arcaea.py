@@ -29,7 +29,6 @@ class Arcaea(Cog_Extension):
         if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
             embed=discord.Embed(title="錯誤排除", color=0xffe26f)
             embed.add_field(name=".arc", value="請輸入合理的難度喵~(7 ~ 11)", inline=False)
-            embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
 
@@ -58,7 +57,6 @@ class Arcaea(Cog_Extension):
         except:
             embed=discord.Embed(title="錯誤排除", color=0xffe26f)
             embed.add_field(name=".arcbomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
-            embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
 
@@ -81,7 +79,6 @@ class Arcaea(Cog_Extension):
             if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
                 embed=discord.Embed(title="錯誤排除", color=0xffe26f)
                 embed.add_field(name=".arcbomb", value="請輸入合理的難度喵~(7 ~ 11)", inline=False)
-                embed.set_image(url=(jdata["giraffe"]))
                 await ctx.send(embed=embed)
                 return
 
@@ -134,7 +131,6 @@ class Arcaea(Cog_Extension):
         else:
             embed=discord.Embed(title="錯誤排除", color=0xffe26f)
             embed.add_field(name=".arcbomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
-            embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
 
