@@ -27,8 +27,8 @@ class CytusII(Cog_Extension):
         diffs = list(set(diffs).difference(set(temp)))
 
         if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
-            embed=discord.Embed(title="錯誤排除", color=0xffe26f)
-            embed.add_field(name=".c2", value="請輸入合理的難度喵~(8 ~ 15)", inline=False)
+            embed=discord.Embed(title="ERROR", color=0xffe26f)
+            embed.add_field(name=".c2", value="Please enter a reasonable difficulty meow~ (8 ~ 15)\n請輸入合理的難度喵~(8 ~ 15)", inline=False)
             embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
@@ -40,14 +40,14 @@ class CytusII(Cog_Extension):
             resultdiff = random.choice(diffs)
         
         if boo:
-            embed=discord.Embed(title="錯誤警告", color=0xffe26f)
-            embed.add_field(name=".c2", value="出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
+            embed=discord.Embed(title="WARNING", color=0xffe26f)
+            embed.add_field(name=".c2", value="Amazing typing~ Unrecognizable input meow~\nKeep typing in a mess, it's none of my business meow!!\n出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
             await ctx.send(embed=embed)
             
         keyword = "c2lv" + resultdiff + "songs"
         random_song = random.choice(jdata[keyword])
 
-        embed=discord.Embed(title="選擇困難症喵?", description="讓本喵來幫你喵:", color=0xffe26f)
+        embed=discord.Embed(title="Hard to make decision?選擇困難症喵?", description="Take my hand meow讓本喵來幫你喵:", color=0xffe26f)
         embed.set_image(url=(random_song))
         await ctx.send(embed=embed)
 
@@ -56,8 +56,8 @@ class CytusII(Cog_Extension):
         try:
             amount = int(amount)
         except:
-            embed=discord.Embed(title="錯誤排除", color=0xffe26f)
-            embed.add_field(name=".c2bomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
+            embed=discord.Embed(title="ERROR", color=0xffe26f)
+            embed.add_field(name=".c2bomb", value="Please enter a reasonable amount meow~(2 ~ 5)\n請輸入合理的數量喵~(2 ~ 5)", inline=False)
             embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
@@ -79,14 +79,14 @@ class CytusII(Cog_Extension):
             diffs = list(set(diffs).difference(set(temp)))
 
             if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
-                embed=discord.Embed(title="錯誤排除", color=0xffe26f)
-                embed.add_field(name=".c2bomb", value="請輸入合理的難度喵~(8 ~ 15)", inline=False)
+                embed=discord.Embed(title="ERROR", color=0xffe26f)
+                embed.add_field(name=".c2bomb", value="Please enter a reasonable difficulty meow~ (8 ~ 15)\n請輸入合理的難度喵~(8 ~ 15)", inline=False)
                 embed.set_image(url=(jdata["giraffe"]))
                 await ctx.send(embed=embed)
                 return
 
             if ((amount == 4) or (amount == 5)) and (len(diffs) == 1) and (diffs[0] == "8"):
-                await ctx.send("8級只有3首喵~\n")
+                await ctx.send("Lv 8 only have “three” songs meow~ \nJust more than the degree of your IQ, bro~\n8級只有3首喵~\n")
                 await ctx.send("<:Gcat3:711805083695710228>")
                 return
             
@@ -99,8 +99,8 @@ class CytusII(Cog_Extension):
                 nowdiff = random.choice(diffs)
 
             if boo:
-                embed=discord.Embed(title="錯誤警告", color=0xffe26f)
-                embed.add_field(name=".c2bomb", value="出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
+                embed=discord.Embed(title="WARNING", color=0xffe26f)
+                embed.add_field(name=".c2bomb", value="Amazing typing~ Unrecognizable input meow~\nKeep typing in a mess, it's none of my business meow!!\n出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
                 await ctx.send(embed=embed)
 
             nowkeyword = "c2lv" + nowdiff + "songs"
@@ -124,7 +124,7 @@ class CytusII(Cog_Extension):
             i = 0
             for i in range(amount):
                 if i == 0:
-                    embed=discord.Embed(title="選擇困難症喵?", description="讓本喵來幫你喵:", color=0xffe26f)
+                    embed=discord.Embed(title="Hard to make decision?選擇困難症喵?", description="Take my hand meow讓本喵來幫你喵:", color=0xffe26f)
                 else:
                     embed=discord.Embed(color=0xffe26f)
                 random_song = songs[i]
@@ -132,8 +132,8 @@ class CytusII(Cog_Extension):
                 await ctx.send(embed=embed)
 
         else:
-            embed=discord.Embed(title="錯誤排除", color=0xffe26f)
-            embed.add_field(name=".c2bomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
+            embed=discord.Embed(title="ERROR", color=0xffe26f)
+            embed.add_field(name=".c2bomb", value="Please enter a reasonable amount meow~(2 ~ 5)\n請輸入合理的數量喵~(2 ~ 5)", inline=False)
             embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return

@@ -11,7 +11,7 @@ bot = commands.Bot(command_prefix= '.')
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=discord.Game('.help → 獲得幫助'))
+    await bot.change_presence(activity=discord.Game('.help → get help'))
     print(">> Bot is online <<")
     
 @bot.event
@@ -48,49 +48,49 @@ bot.remove_command('help')
 @bot.command()
 async def help(ctx, *comad):
     if comad:
-        embed=discord.Embed(title="指令查詢", color=0xffe26f)
+        embed=discord.Embed(title="Command Query", color=0xffe26f)
         if comad[0] == 'arc':
-            embed.add_field(name="Arcaea", value=".arc <amount> 抽取隨機Arcaea歌曲", inline=False)
+            embed.add_field(name="Arcaea", value=".arc [difficulty...] \nRandom Arcaea songs\n抽取隨機Arcaea歌曲", inline=False)
         elif comad[0] == 'arcbomb':
-            embed.add_field(name="Arcaea", value=".arcbomb <amount> [difficulty...] 連續抽取2~5首Arcaea歌曲", inline=False)
+            embed.add_field(name="Arcaea", value=".arcbomb <amount> [difficulty...] \nDraw 2~5 random Arcaea songs\n連續抽取2~5首Arcaea歌曲", inline=False)
         elif comad[0] == 'c2':
-            embed.add_field(name="Cytus II", value=".c2 <amount> 抽取隨機Cytus II歌曲", inline=False)
+            embed.add_field(name="Cytus II", value=".c2 [difficulty...] \nRandom Cytus II songs\n抽取隨機Cytus II歌曲", inline=False)
         elif comad[0] == 'c2bomb':
-            embed.add_field(name="Cytus II", value=".c2bomb <amount> [difficulty...] 連續抽取2~5首Cytus II歌曲", inline=False)
+            embed.add_field(name="Cytus II", value=".c2bomb <amount> [difficulty...] \nDraw 2~5 random Cytus II songs\n連續抽取2~5首Cytus II歌曲", inline=False)
         elif comad[0] == 'dee':
-            embed.add_field(name="Deemo", value=".dee <amount> 抽取隨機Deemo歌曲", inline=False)
+            embed.add_field(name="Deemo", value=".dee [difficulty...] \nRandom Deemo songs\n抽取隨機Deemo歌曲", inline=False)
         elif comad[0] == 'deebomb':
-            embed.add_field(name="Deemo", value=".deebomb <amount> [difficulty...] 連續抽取2~5首Deemo歌曲", inline=False)
+            embed.add_field(name="Deemo", value=".deebomb <amount> [difficulty...] \nDraw 2~5 random Deemo songs\n連續抽取2~5首Deemo歌曲", inline=False)
         elif comad[0] == 'member':
-            embed.add_field(name="Common", value=".member 顯示當前群組人數", inline=False)
+            embed.add_field(name="Common", value=".member \nQuery the number of servers (not including bots)\n顯示當前群組人數 (不包含機器人)", inline=False)
         elif comad[0] == 'mj':
-            embed.add_field(name="Common", value=".mj <name> 查詢成員進入伺服器時間", inline=False)
+            embed.add_field(name="Common", value=".mj <name> \nQuery members' joining time\n查詢成員進入伺服器時間", inline=False)
         elif comad[0] == 'ping':
-            embed.add_field(name="Common", value=".ping 查詢現在bot的延遲", inline=False)
+            embed.add_field(name="Common", value=".ping \nQuery current bot delay\n查詢現在bot的延遲", inline=False)
         elif comad[0] == 'say':
-            embed.add_field(name="Common", value=".say <msg> 讓bot重複訊息", inline=False)
+            embed.add_field(name="Common", value=".say <msg> \nRepeat the entered text\n讓bot重複訊息", inline=False)
         elif comad[0] == 'choose':
-            embed.add_field(name="Random", value=".choose [anything...]隨機選擇輸入的文字", inline=False)
+            embed.add_field(name="Random", value=".choose [anything...] \nRandomly extract the entered text\n隨機選擇輸入的文字", inline=False)
         elif comad[0] == 'mora':
-            embed.add_field(name="Random", value=".mora 猜拳", inline=False)
+            embed.add_field(name="Random", value=".mora \nFinger-guessing game\n猜拳", inline=False)
         elif comad[0] == 'rs':
-            embed.add_field(name="Random", value=".rs <num_of_people> <group_amount> <role> 隨機分隊", inline=False)
+            embed.add_field(name="Random", value=".rs <num_of_people> <group_amount> <role> \nRandom team with a certain group of players\n隨機分隊", inline=False)
         elif comad[0] == 'rn':
-            embed.add_field(name="Random", value=".rn <amount> <low> <top> 指定區間內隨機數字抽取", inline=False)
+            embed.add_field(name="Random", value=".rn <amount> <low> <top> \nRandom number extraction\n指定區間內隨機數字抽取", inline=False)
         else:
-            embed.add_field(name="Not Found", value="查無此指令", inline=False)
+            embed.add_field(name="Not Found", value="No such command found\n查無此指令", inline=False)
     
         await ctx.send(embed=embed)    
         
     else:   
-        embed=discord.Embed(title="桔喵小助手", description="指令查詢", color=0xffe26f)
+        embed=discord.Embed(title="桔喵Assistant", description="Command Query", color=0xffe26f)
         embed.set_thumbnail(url="https://i.imgur.com/pms8YGV.png")
         embed.add_field(name="<a:headbob:732803179103911987>Arcaea", value="arc | arcbomb", inline=False)
         embed.add_field(name="<a:headbob:732803179103911987>Cytus II", value="c2 | c2bomb", inline=False)
         embed.add_field(name="<a:headbob:732803179103911987>Deemo", value="dee | deebomb", inline=False)
         embed.add_field(name="<a:headbob:732803179103911987>Common", value="member | mj | ping | say", inline=False)
         embed.add_field(name="<a:headbob:732803179103911987>Random", value="choose | mora | rs | rn", inline=False)
-        embed.set_footer(text="使用.help <cmd>來查詢你想了解的指令")
+        embed.set_footer(text="use .help <cmd> to query the command you want to know")
         await ctx.send(embed=embed)
 
 @bot.event
@@ -100,16 +100,16 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.errors.CommandNotFound):
         return
     elif isinstance(error, commands.errors.MissingRequiredArgument):
-        embed.add_field(name="缺少必要參數", value="你什麼都不說是要本喵怎麼辦喵?", inline=False)
+        embed.add_field(name="Missing Required Argument缺少必要參數", value="你什麼都不說是要本喵怎麼辦喵?", inline=False)
     elif isinstance(error, commands.errors.BadArgument):
-        embed.add_field(name="型態錯誤或不明的參數", value="找遍了本喵的資料庫也幫不了你了喵~", inline=False)
+        embed.add_field(name="Incorrect or Unknown Argument型態錯誤或不明的參數", value="找遍了本喵的資料庫也幫不了你了喵~", inline=False)
     elif isinstance(error, commands.errors.CommandInvokeError):
-        embed.add_field(name="呼叫指令時出現例外狀況", value="你...你...你...罰你去看.help喵!!", inline=False)
+        embed.add_field(name="An Exception Occurred呼叫指令時出現例外狀況", value="你...你...你...罰你去看.help喵!!", inline=False)
     else:
-        embed.add_field(name="發生錯誤", value="本喵什麼都不知道喵~", inline=False)
-        embed.add_field(name="錯誤訊息", value=error, inline=False)
+        embed.add_field(name="ERROR", value="本喵什麼都不知道喵~", inline=False)
+        embed.add_field(name="Error message", value=error, inline=False)
 
-    embed.set_footer(text="使用.help <cmd>來查詢你想了解的指令")
+    embed.set_footer(text="use .help <cmd> to query the command you want to know")
     await ctx.send(embed=embed)
 
 for filename in os.listdir('./cmds'):
