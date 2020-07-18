@@ -77,6 +77,8 @@ async def help(ctx, *comad):
             embed.add_field(name="Random", value=".rs <num_of_people> <group_amount> <role> \nRandom team with a certain group of players\n隨機分隊", inline=False)
         elif comad[0] == 'rn':
             embed.add_field(name="Random", value=".rn <amount> <low> <top> \nRandom number extraction\n指定區間內隨機數字抽取", inline=False)
+        elif comad[0] == 'cal':
+            embed.add_field(name="Tool", value=".cal <formula> \nCalculate the answer\n計算算式的答案", inline=False)
         else:
             embed.add_field(name="Not Found", value="No such command found\n查無此指令", inline=False)
     
@@ -90,6 +92,7 @@ async def help(ctx, *comad):
         embed.add_field(name="<a:headbob:732803179103911987>Deemo", value="dee | deebomb", inline=False)
         embed.add_field(name="<a:headbob:732803179103911987>Common", value="member | mj | ping | say", inline=False)
         embed.add_field(name="<a:headbob:732803179103911987>Random", value="choose | mora | rs | rn", inline=False)
+        embed.add_field(name="<a:headbob:732803179103911987>Tool", value="cal", inline=False)
         embed.set_footer(text="use .help <cmd> to query the command you want to know")
         await ctx.send(embed=embed)
 
