@@ -12,7 +12,7 @@ class Tool(Cog_Extension):
     @commands.command()
     async def cal(self, ctx, formula):
         ans = eval(formula)
-        embed=discord.Embed(title="The answer is", description = f':small_orange_diamond: **{ans}** meow!!',color=0xffe26f)
+        embed=discord.Embed(title="The answer is", description = f':small_orange_diamond: **{ans}**',color=0xffe26f)
         await ctx.send(embed=embed)
 
 
