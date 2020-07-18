@@ -7,12 +7,12 @@ import json
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
 
-class Arcaea(Cog_Extension):
+class Deemo(Cog_Extension):
 
 
     @commands.command()
-    async def arc(self, ctx, *difficulty):
-        allist = ["7", "8", "9", "9+", "10", "10+", "11"]
+    async def dee(self, ctx, *difficulty):
+        allist = ["9", "10", "11", "ex"]
         diffs = []
         temp = []
         boo = False
@@ -28,7 +28,7 @@ class Arcaea(Cog_Extension):
 
         if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
             embed=discord.Embed(title="錯誤排除", color=0xffe26f)
-            embed.add_field(name=".arc", value="請輸入合理的難度喵~(7 ~ 11)", inline=False)
+            embed.add_field(name=".dee", value="請輸入合理的難度喵~(9 ~ 11,也可以輸入ex)", inline=False)
             embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
@@ -41,30 +41,30 @@ class Arcaea(Cog_Extension):
         
         if boo:
             embed=discord.Embed(title="錯誤警告", color=0xffe26f)
-            embed.add_field(name=".arc", value="出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
+            embed.add_field(name=".dee", value="出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
             await ctx.send(embed=embed)
             
-        keyword = "arc" + resultdiff + "songs"
+        keyword = "deemolv" + resultdiff + "songs"
         random_song = random.choice(jdata[keyword])
 
         embed=discord.Embed(title="選擇困難症喵?", description="讓本喵來幫你喵:", color=0xffe26f)
-        embed.set_image(url=(random_song + '.jpg'))
+        embed.set_image(url=(random_song))
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def arcbomb(self, ctx, amount, *difficulty):
+    async def deebomb(self, ctx, amount, *difficulty):
         try:
             amount = int(amount)
         except:
             embed=discord.Embed(title="錯誤排除", color=0xffe26f)
-            embed.add_field(name=".arcbomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
+            embed.add_field(name=".deebomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
             embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
 
         if 1 < amount <= 5:
 
-            allist = ["7", "8", "9", "9+", "10", "10+", "11"]
+            allist = ["9", "10", "11", "ex"]
             diffs = []
             temp = []
             boo = False
@@ -80,15 +80,15 @@ class Arcaea(Cog_Extension):
 
             if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
                 embed=discord.Embed(title="錯誤排除", color=0xffe26f)
-                embed.add_field(name=".arcbomb", value="請輸入合理的難度喵~(7 ~ 11)", inline=False)
+                embed.add_field(name=".deebomb", value="請輸入合理的難度喵~(9 ~ 11,也可以輸入ex)", inline=False)
                 embed.set_image(url=(jdata["giraffe"]))
                 await ctx.send(embed=embed)
                 return
 
-            if (amount == 5) and (len(diffs) == 1) and (diffs[0] == "11"):
-                await ctx.send("11級只有4首喵~\n")
-                await ctx.send("<:Gcat3:711805083695710228>")
-                return
+            # if ((amount == 4) or (amount == 5)) and (len(diffs) == 1) and (diffs[0] == "8"):
+            #     await ctx.send("8級只有3首喵~\n")
+            #     await ctx.send("<:Gcat3:711805083695710228>")
+            #     return
             
             songs = []
 
@@ -100,20 +100,20 @@ class Arcaea(Cog_Extension):
 
             if boo:
                 embed=discord.Embed(title="錯誤警告", color=0xffe26f)
-                embed.add_field(name=".arcbomb", value="出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
+                embed.add_field(name=".deebomb", value="出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
                 await ctx.send(embed=embed)
 
-            nowkeyword = "arc" + nowdiff + "songs"
+            nowkeyword = "deemolv" + nowdiff + "songs"
             now = random.choice(jdata[nowkeyword])
             songs.append(now)
             i = 0
             while i < (amount - 1):
                 if "all" in difficulty or "ALL" in difficulty:
-                    allist = ["7", "8", "9", "9+", "10", "10+", "11"]
+                    allist = ["9", "10", "11", "ex"]
                     nowdiff = random.choice(allist)
                 else:
                     nowdiff = random.choice(diffs)
-                nowkeyword = "arc" + nowdiff + "songs"
+                nowkeyword = "deemolv" + nowdiff + "songs"
                 now = random.choice(jdata[nowkeyword])
                 if now in songs:
                     continue
@@ -133,11 +133,11 @@ class Arcaea(Cog_Extension):
 
         else:
             embed=discord.Embed(title="錯誤排除", color=0xffe26f)
-            embed.add_field(name=".arcbomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
+            embed.add_field(name=".deebomb", value="請輸入合理的數量喵~(2 ~ 5)", inline=False)
             embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
             return
 
 
 def setup(bot):
-    bot.add_cog(Arcaea(bot))
+    bot.add_cog(Deemo(bot))

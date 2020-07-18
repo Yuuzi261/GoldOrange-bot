@@ -53,6 +53,14 @@ async def help(ctx, *comad):
             embed.add_field(name="Arcaea", value=".arc <amount> 抽取隨機Arcaea歌曲", inline=False)
         elif comad[0] == 'arcbomb':
             embed.add_field(name="Arcaea", value=".arcbomb <amount> [difficulty...] 連續抽取2~5首Arcaea歌曲", inline=False)
+        elif comad[0] == 'c2':
+            embed.add_field(name="Cytus II", value=".c2 <amount> 抽取隨機Cytus II歌曲", inline=False)
+        elif comad[0] == 'c2bomb':
+            embed.add_field(name="Cytus II", value=".c2bomb <amount> [difficulty...] 連續抽取2~5首Cytus II歌曲", inline=False)
+        elif comad[0] == 'dee':
+            embed.add_field(name="Deemo", value=".dee <amount> 抽取隨機Deemo歌曲", inline=False)
+        elif comad[0] == 'deebomb':
+            embed.add_field(name="Deemo", value=".deebomb <amount> [difficulty...] 連續抽取2~5首Deemo歌曲", inline=False)
         elif comad[0] == 'member':
             embed.add_field(name="Common", value=".member 顯示當前群組人數", inline=False)
         elif comad[0] == 'mj':
@@ -77,9 +85,11 @@ async def help(ctx, *comad):
     else:   
         embed=discord.Embed(title="桔喵小助手", description="指令查詢", color=0xffe26f)
         embed.set_thumbnail(url="https://i.imgur.com/pms8YGV.png")
-        embed.add_field(name="Arcaea", value="arc | arcbomb", inline=False)
-        embed.add_field(name="Common", value="member | mj | ping | say", inline=False)
-        embed.add_field(name="Random", value="choose | mora | rs | rn", inline=False)
+        embed.add_field(name="<a:headbob:732803179103911987>Arcaea", value="arc | arcbomb", inline=False)
+        embed.add_field(name="<a:headbob:732803179103911987>Cytus II", value="c2 | c2bomb", inline=False)
+        embed.add_field(name="<a:headbob:732803179103911987>Deemo", value="dee | deebomb", inline=False)
+        embed.add_field(name="<a:headbob:732803179103911987>Common", value="member | mj | ping | say", inline=False)
+        embed.add_field(name="<a:headbob:732803179103911987>Random", value="choose | mora | rs | rn", inline=False)
         embed.set_footer(text="使用.help <cmd>來查詢你想了解的指令")
         await ctx.send(embed=embed)
 
