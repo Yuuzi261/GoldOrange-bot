@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from openpyxl import load_workbook
 import json
 import random
 import os
@@ -9,9 +10,31 @@ with open('setting.json', 'r', encoding='utf8') as jfile:
 
 bot = commands.Bot(command_prefix= '.')
 
+def count(c):
+    wb = load_workbook('cmdcount.xlsx')
+    ws = wb.active
+    if ws['A1'].value != None:
+        a = int(ws['A1'].value)
+        for i in range(a):
+            if str(ws['B' + str(i+1)].value) == str(c.author.id):
+                ws['C' + str(i+1)].value = int(ws['C' + str(i+1)].value) + 1
+                break
+            else:
+                if i == (a-1):
+                    ws['A1'].value = int(ws['A1'].value) + 1
+                    ws['B' + str(i+2)].value = str(c.author.id)
+                    ws['C' + str(i+2)].value = 1
+    else:
+        ws['A1'].value = 1
+        ws['B1'].value = str(c.author.id)
+        ws['C1'].value = 1
+
+    wb.save('cmdcount.xlsx')
+    wb.close()
+
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=discord.Game('.help → get help'))
+    await bot.change_presence(status = discord.Status.do_not_disturb, activity=discord.Game('debugging'))
     print(">> Bot is online <<")
     
 @bot.event
@@ -42,11 +65,12 @@ async def unload(ctx, extension):
 @commands.is_owner()
 async def reload(ctx, extension):
     bot.reload_extension(f'cmds.{extension}')
-    await ctx.send(f'Re - Loaded {extension} done.')
+    await ctx.send(f'Re - Loaded {extension} done.')  
 
 bot.remove_command('help')
 @bot.command()
 async def help(ctx, *comad):
+    count(ctx)
     if comad:
         embed=discord.Embed(title="Command Query", color=0xffe26f)
         if comad[0] == 'arc':
@@ -79,6 +103,8 @@ async def help(ctx, *comad):
             embed.add_field(name="Random", value=".rn <amount> <low> <top> \nRandom number extraction\n指定區間內隨機數字抽取", inline=False)
         elif comad[0] == 'cal':
             embed.add_field(name="Tool", value=".cal <formula> \nCalculate the answer\n計算算式的答案", inline=False)
+        elif comad[0] == 'cnt':
+            embed.add_field(name="Tool", value=".cnt <formula> \nCheck the number of times you have used the commands\n查詢你到目前為止使用指令的次數", inline=False)
         else:
             embed.add_field(name="Not Found", value="No such command found\n查無此指令", inline=False)
     
@@ -104,10 +130,13 @@ async def on_command_error(ctx, error):
         return
     elif isinstance(error, commands.errors.MissingRequiredArgument):
         embed.add_field(name="Missing Required Argument缺少必要參數", value="你什麼都不說是要本喵怎麼辦喵?", inline=False)
+        embed.add_field(name="Error message", value=error, inline=False)
     elif isinstance(error, commands.errors.BadArgument):
         embed.add_field(name="Incorrect or Unknown Argument型態錯誤或不明的參數", value="找遍了本喵的資料庫也幫不了你了喵~", inline=False)
+        embed.add_field(name="Error message", value=error, inline=False)
     elif isinstance(error, commands.errors.CommandInvokeError):
         embed.add_field(name="An Exception Occurred呼叫指令時出現例外狀況", value="你...你...你...罰你去看.help喵!!", inline=False)
+        embed.add_field(name="Error message", value=error, inline=False)
     else:
         embed.add_field(name="ERROR", value="本喵什麼都不知道喵~", inline=False)
         embed.add_field(name="Error message", value=error, inline=False)
