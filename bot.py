@@ -137,6 +137,8 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.errors.CommandInvokeError):
         embed.add_field(name="An Exception Occurred呼叫指令時出現例外狀況", value="你...你...你...罰你去看.help喵!!", inline=False)
         embed.add_field(name="Error message", value=error, inline=False)
+    elif isinstance(error, commands.errors.CommandOnCooldown):
+        embed.add_field(name="急什麼急喵?", value=error, inline=False)
     else:
         embed.add_field(name="ERROR", value="本喵什麼都不知道喵~", inline=False)
         embed.add_field(name="Error message", value=error, inline=False)
