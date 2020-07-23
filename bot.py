@@ -8,7 +8,7 @@ import os
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
 
-bot = commands.Bot(command_prefix= '.')
+bot = commands.Bot(command_prefix= '.', case_insensitive=True)
 
 def count(c):
     wb = load_workbook('cmdcount.xlsx')
@@ -118,7 +118,7 @@ async def help(ctx, *comad):
         embed.add_field(name="<a:headbob:732803179103911987>Deemo", value="dee | deebomb", inline=False)
         embed.add_field(name="<a:headbob:732803179103911987>Common", value="member | mj | ping | say", inline=False)
         embed.add_field(name="<a:headbob:732803179103911987>Random", value="choose | mora | rs | rn", inline=False)
-        embed.add_field(name="<a:headbob:732803179103911987>Tool", value="cal", inline=False)
+        embed.add_field(name="<a:headbob:732803179103911987>Tool", value="cal | cnt", inline=False)
         embed.set_footer(text="use .help <cmd> to query the command you want to know")
         await ctx.send(embed=embed)
 
