@@ -170,6 +170,103 @@ class Fun(Cog_Extension):
         iwb.save('item.xlsx')
 
     @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def buy(self, ctx, amount: int, obj):
+        count(ctx)
+        a = 0
+        if iws['A1'].value != None:
+            a = int(iws['A1'].value)
+            for i in range(1, a + 1):
+                if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
+                    a = i+1
+                    break
+                else:
+                    if i == a:
+                        await ctx.send('You don\'t have an account(enter .pick first meow!)')
+        else:
+            await ctx.send('can\'t find any user')
+        if obj == 'Copper':
+            iws['B' + str(a)].value -= amount*2
+            iws['C' + str(a)].value += amount
+            await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Copper** meow!Thank you for coming meow~')
+        elif obj == 'Silver':
+            iws['B' + str(a)].value -= amount*20
+            iws['D' + str(a)].value += amount
+            await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Silver** meow!Thank you for coming meow~')
+        elif obj == 'Gold':
+            iws['B' + str(a)].value -= amount*400
+            iws['E' + str(a)].value += amount
+            await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Gold** meow!Thank you for coming meow~')
+        elif obj == 'Diamond':
+            iws['B' + str(a)].value -= amount*4000
+            iws['F' + str(a)].value += amount
+            await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Diamond** meow!Thank you for coming meow~')
+        elif obj == 'MG':
+            iws['B' + str(a)].value -= amount*100000
+            iws['G' + str(a)].value += amount
+            await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Miracle Gem** meow!Thank you for coming meow~')
+        elif obj == 'TNT':
+            iws['B' + str(a)].value -= amount*250
+            iws['J' + str(a)].value += amount
+            await ctx.send(f':ballot_box_with_check: It\'s your **{amount} TNT** meow!Thank you for coming meow~')
+        elif  obj == 'Dynamite':
+            iws['B' + str(a)].value -= amount*500
+            iws['K' + str(a)].value += amount
+            await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Dynamite** meow!Thank you for coming meow~')
+        elif obj == 'Knife':
+            if iws['L' + str(a)].value == 0:
+                iws['B' + str(a)].value -= amount*5000
+                iws['L' + str(a)].value += amount
+                await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Knife** meow!Thank you for coming meow~')
+            else:
+                await ctx.send(f':x: You have owned a Knife meow!')
+        elif obj == 'DE':
+            if iws['M' + str(a)].value == 0:
+                iws['B' + str(a)].value -= amount*25000
+                iws['M' + str(a)].value += amount
+                await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Desert Eagle** meow!Thank you for coming meow~')
+            else:
+                await ctx.send(f':x: You have owned a Desert Eagle meow!')
+        elif obj == 'MP5':
+            if iws['N' + str(a)].value == 0:
+                iws['B' + str(a)].value -= amount*35000
+                iws['N' + str(a)].value += amount
+                await ctx.send(f':ballot_box_with_check: It\'s your **{amount} MP5** meow!Thank you for coming meow~')
+            else:
+                await ctx.send(f':x: You have owned a MP5 meow!')
+        elif obj == 'Bullet(DE)':
+            iws['B' + str(a)].value -= amount*10
+            iws['O' + str(a)].value += amount
+            await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Bullet(DE)** meow!Thank you for coming meow~')
+        elif obj == 'Magazine(MP5)':
+            iws['B' + str(a)].value -= amount*20
+            iws['P' + str(a)].value += amount
+            await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Magazine(MP5)** meow!Thank you for coming meow~')
+        iwb.save('item.xlsx')
+
+
+    @commands.command()
+    @commands.cooldown(1, 30, commands.BucketType.user)
+    async def shop(self, ctx):
+        embed=discord.Embed(title="桔喵Black Market", description="Product List", color=0xffe26f)
+        embed.set_thumbnail(url="https://i.imgur.com/NOq5mPb.png")
+        embed.add_field(name=":small_orange_diamond:Copper", value="$2 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:Silver", value="$20 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:Gold", value="$400 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:Diamond", value="$4000 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:Miracle Gem", value="$100000 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:TNT", value="$250 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:Dynamite", value="$500 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:Knife", value="$5000 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:Desert Eagle", value="$25000 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:MP5", value="$35000 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:Bullet(DE)", value="$10 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:Magazine(MP5)", value="$20 Gcoin", inline=True)
+        embed.set_footer(text="Thank you for coming meow~")
+        await ctx.send(embed=embed)
+        iwb.save('item.xlsx')
+
+    @commands.command()
     @commands.cooldown(1, 600, commands.BucketType.user)
     async def give(self, ctx, name: discord.Member, amount: int, typee):
         count(ctx)
@@ -256,19 +353,41 @@ class Fun(Cog_Extension):
                     for j in range(1, a + 1):
                         if str(iws['A' + str(j+1)].value) == str(name.id):
                             if iws['H' + str(i+1)].value < 40:
+                                isProps = 0
                                 iws['H' + str(i+1)].value += 1
                                 await ctx.send(f'<a:hand:732937258868539483> **{ctx.author}**\'s Robbery skills point + 1 ({iws["H" + str(i+1)].value}/40)')
                             r = random.randint(1, 100)
                             if r <= iws['H' + str(i+1)].value:
                                 P = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
                                 p = random.choice(P)
+                                if iws['N' + str(i+1)].value == 1 and iws['P' + str(i+1)].value > 0:
+                                    p = iws['B' + str(j+1)].value
+                                    isProps = 1
+                                elif iws['M' + str(i+1)].value == 1 and iws['O' + str(i+1)].value > 0:
+                                    p = iws['B' + str(j+1)].value//2
+                                    isProps = 2
+                                elif iws['L' + str(i+1)].value == 1:
+                                    p*=2
+                                    isProps = 3
                                 iws['B' + str(i+1)].value += p
                                 iws['B' + str(j+1)].value -= p
-                                await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} Gcoin)')
+
+                                if isProps == 0:
+                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} Gcoin)')
+                                elif isProps == 1:
+                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} Gcoin)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **MP5** so all the **{name}**\'s Gcoin was taken away meow!')
+                                elif isProps == 2:
+                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} Gcoin)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Desert Eagle** so half the **{name}**\'s Gcoin was taken away meow!')
+                                else:
+                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} Gcoin)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Knife** so **{ctx.author}** robbed 2x Gcoin meow!')
                                 
                             else:
                                 iws['B' + str(i+1)].value -= 200
                                 await ctx.send(f'<a:money:730029539815850045> **{ctx.author}** failed to rob the property form **{name}**\n:police_car: The MeowPolice took your property away meow~(200 Gcoin)')
+                            if iws['N' + str(i+1)].value == 1 and iws['P' + str(i+1)].value > 0:
+                                iws['P' + str(i+1)].value -= 1
+                            elif iws['M' + str(i+1)].value == 1 and iws['O' + str(i+1)].value > 0:
+                                iws['O' + str(i+1)].value -= 1
                             isfind = True
                             break
                         else:
@@ -316,20 +435,31 @@ class Fun(Cog_Extension):
             for i in range(1, a + 1):
                 if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
                     it, num = mine()
+                    if iws['K' + str(i+1)].value > 0:
+                        iws['K' + str(i+1)].value -= 1
+                        num*=4
+                        await ctx.send(f':boom: You blasted a HUGE hole and you found **{num}** **{iws[it + "1"].value}**!(x4 income)')
+                    elif iws['J' + str(i+1)].value > 0:
+                        iws['J' + str(i+1)].value -= 1
+                        num*=2
+                        await ctx.send(f':boom: You blasted a BIG hole and you found **{num}** **{iws[it + "1"].value}**!(x2 income)')
+                    else:
+                        await ctx.send(f'You pick up **{num}** **{iws[it + "1"].value}**!')
                     iws[it + str(i+1)].value += num
-                    await ctx.send(f'You pick up **{num}** **{iws[it + "1"].value}**!')
                     break
                 else:
                     if i == a:
                         iws['A1'].value = int(iws['A1'].value) + 1
-                        iws.append([-1, 0, 0, 0, 0, 0, 0, 0, 0])
+                        nL = [0] * 16
+                        iws.append(nL)
                         iws['A' + str(i+2)].value = str(ctx.author.id)
                         it, num = mine()
                         iws[it + str(i+2)].value += num
                         await ctx.send(f'You pick up **{num}** **{iws[it + "1"].value}**!')
         else:
             iws['A1'].value = 1
-            iws.append([-1, 0, 0, 0, 0, 0, 0, 0, 0])
+            nL = [0] * 16
+            iws.append(nL)
             iws['A2'].value = str(ctx.author.id)
             it, name = mine()
             iws[it + '2'].value += num
