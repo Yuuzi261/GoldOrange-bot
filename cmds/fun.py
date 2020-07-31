@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from openpyxl import load_workbook
 from core.classes import Cog_Extension
+import datetime
 import random
 import json
 
@@ -201,7 +202,7 @@ class Fun(Cog_Extension):
                         if tpro > pro:
                             rk+=1
                         
-                    embed=discord.Embed(title=f'{name} is in **#{rk}** meow!!', description=f'Property = **{pro} Gcoin**', color=0xffe26f)    
+                    embed=discord.Embed(title=f'{name} is in **#{rk}** meow!!', description=f'Property = **{pro} <:Gcoin:736650744861556749>**', color=0xffe26f)    
                     break
                 else:
                     if i == a:
@@ -256,15 +257,15 @@ class Fun(Cog_Extension):
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'Diamond':
-            if iws['B' + str(a)].value - amount*4000 >= 0:
-                iws['B' + str(a)].value -= amount*4000
+            if iws['B' + str(a)].value - amount*8000 >= 0:
+                iws['B' + str(a)].value -= amount*8000
                 iws['F' + str(a)].value += amount
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Diamond** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'MG':
-            if iws['B' + str(a)].value - amount*100000 >= 0:
-                iws['B' + str(a)].value -= amount*100000
+            if iws['B' + str(a)].value - amount*400000 >= 0:
+                iws['B' + str(a)].value -= amount*400000
                 iws['G' + str(a)].value += amount
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Miracle Gem** meow!Thank you for coming meow~')
             else:
@@ -294,9 +295,9 @@ class Fun(Cog_Extension):
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'DE':
-            if iws['B' + str(a)].value - 25000 >= 0:
+            if iws['B' + str(a)].value - 35000 >= 0:
                 if iws['M' + str(a)].value == 0:
-                    iws['B' + str(a)].value -= 25000
+                    iws['B' + str(a)].value -= 35000
                     iws['M' + str(a)].value += 1
                     await ctx.send(f':ballot_box_with_check: It\'s your **Desert Eagle** meow!Thank you for coming meow~')
                 else:
@@ -304,9 +305,9 @@ class Fun(Cog_Extension):
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'MP5':
-            if iws['B' + str(a)].value - 35000 >= 0:
+            if iws['B' + str(a)].value - 50000 >= 0:
                 if iws['N' + str(a)].value == 0:
-                    iws['B' + str(a)].value -= 35000
+                    iws['B' + str(a)].value -= 50000
                     iws['N' + str(a)].value += 1
                     await ctx.send(f':ballot_box_with_check: It\'s your **MP5** meow!Thank you for coming meow~')
                 else:
@@ -314,19 +315,39 @@ class Fun(Cog_Extension):
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'Bullet(DE)':
-            if iws['B' + str(a)].value - amount*50 >= 0:
-                iws['B' + str(a)].value -= amount*50
+            if iws['B' + str(a)].value - amount*100 >= 0:
+                iws['B' + str(a)].value -= amount*100
                 iws['O' + str(a)].value += amount
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Bullet(DE)** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'Magazine(MP5)':
-            if iws['B' + str(a)].value - amount*100 >= 0:
-                iws['B' + str(a)].value -= amount*100
+            if iws['B' + str(a)].value - amount*200 >= 0:
+                iws['B' + str(a)].value -= amount*200
                 iws['P' + str(a)].value += amount
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Magazine(MP5)** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
+        # elif obj == 'PickCD':
+        #     if iws['Q' + str(a)].value == 1800:
+        #         await ctx.send(':x: The minimum for PickCD is 1800 sec meow!')
+        #         return
+        #     if iws['B' + str(a)].value - amount*20000 >= 0 and iws['Q' + str(a)].value - amount*100 >= 1800:
+        #         iws['B' + str(a)].value -= amount*20000
+        #         iws['Q' + str(a)].value -= amount*100
+        #         await ctx.send(f':ballot_box_with_check: You cut down the **PickCD {amount} times ({amount*100}sec)** meow!Thank you for coming meow~')
+        #     else:
+        #         await ctx.send(f':x: You don\'t have enough money or over the purchase limit of PickCD meow!Try to type less amount meow!')
+        # elif obj == 'RobCD':
+        #     if iws['R' + str(a)].value == 10800:
+        #         await ctx.send(':x: The minimum for RobCD is 10800 sec meow!')
+        #         return
+        #     if iws['B' + str(a)].value - amount*5000 >= 0 and iws['R' + str(a)].value - amount*100 >= 10800:
+        #         iws['B' + str(a)].value -= amount*5000
+        #         iws['R' + str(a)].value -= amount*100
+        #         await ctx.send(f':ballot_box_with_check: You cut down the **RobCD {amount} times ({amount*100}sec)** meow!Thank you for coming meow~')
+        #     else:
+        #         await ctx.send(f':x: You don\'t have enough money or over the purchase limit of RobCD meow!Try to type less amount meow!')
         iwb.save('item.xlsx')
 
 
@@ -335,18 +356,21 @@ class Fun(Cog_Extension):
     async def shop(self, ctx):
         embed=discord.Embed(title="桔喵Black Market", description="Product List", color=0xffe26f)
         embed.set_thumbnail(url="https://i.imgur.com/NOq5mPb.png")
-        embed.add_field(name=":small_orange_diamond:Copper", value="$3 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:Silver", value="$30 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:Gold", value="$400 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:Diamond", value="$4000 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:Miracle Gem", value="$100000 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:TNT", value="$500 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:Dynamite", value="$1000 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:Knife", value="$5000 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:Desert Eagle", value="$25000 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:MP5", value="$35000 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:Bullet(DE)", value="$50 Gcoin", inline=True)
-        embed.add_field(name=":small_orange_diamond:Magazine(MP5)", value="$100 Gcoin", inline=True)
+        embed.add_field(name=":small_orange_diamond:Copper", value="<:Gcoin:736650744861556749> 3", inline=True)
+        embed.add_field(name=":small_orange_diamond:Silver", value="<:Gcoin:736650744861556749> 30", inline=True)
+        embed.add_field(name=":small_orange_diamond:Gold", value="<:Gcoin:736650744861556749> 400", inline=True)
+        embed.add_field(name=":small_orange_diamond:Diamond", value="<:Gcoin:736650744861556749> 8000", inline=True)
+        embed.add_field(name=":small_orange_diamond:Miracle Gem", value="<:Gcoin:736650744861556749> 400000", inline=True)
+        embed.add_field(name=":small_orange_diamond:TNT", value="<:Gcoin:736650744861556749> 500", inline=True)
+        embed.add_field(name=":small_orange_diamond:Dynamite", value="<:Gcoin:736650744861556749> 1000", inline=True)
+        embed.add_field(name=":small_orange_diamond:Knife", value="<:Gcoin:736650744861556749> 5000", inline=True)
+        embed.add_field(name=":small_orange_diamond:Desert Eagle", value="<:Gcoin:736650744861556749> 35000", inline=True)
+        embed.add_field(name=":small_orange_diamond:MP5", value="<:Gcoin:736650744861556749> 50000", inline=True)
+        embed.add_field(name=":small_orange_diamond:Bullet(DE)", value="<:Gcoin:736650744861556749> 100", inline=True)
+        embed.add_field(name=":small_orange_diamond:Magazine(MP5)", value="<:Gcoin:736650744861556749> 200", inline=True)
+        # embed.add_field(name=":small_orange_diamond:PickCD", value="<:Gcoin:736650744861556749> 20000", inline=True)
+        # embed.add_field(name=":small_orange_diamond:RobCD", value="<:Gcoin:736650744861556749> 5000", inline=True)
+        # embed.add_field(name=":small_orange_diamond:Comming S∞n", value="<:Gcoin:736650744861556749> ??", inline=True)
         embed.set_footer(text="Thank you for coming meow~")
         await ctx.send(embed=embed)
         iwb.save('item.xlsx')
@@ -430,7 +454,7 @@ class Fun(Cog_Extension):
         iwb.save('item.xlsx')
 
     @commands.command()
-    @commands.cooldown(1, 40000, commands.BucketType.user)
+    @commands.cooldown(2, 10800, commands.BucketType.user)
     async def rob(self, ctx, name: discord.Member):
         count(ctx)
         if iws['A1'].value != None:
@@ -440,10 +464,10 @@ class Fun(Cog_Extension):
                 if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
                     for j in range(1, a + 1):
                         if str(iws['A' + str(j+1)].value) == str(name.id):
-                            if iws['H' + str(i+1)].value < 40:
+                            if iws['H' + str(i+1)].value < 20:
                                 isProps = 0
                                 iws['H' + str(i+1)].value += 1
-                                await ctx.send(f'<a:hand:732937258868539483> **{ctx.author}**\'s Robbery skills point + 1 ({iws["H" + str(i+1)].value}/40)')
+                                await ctx.send(f'<a:hand:732937258868539483> **{ctx.author}**\'s Robbery skills point + 0.5 ({iws["H" + str(i+1)].value}/20)')
                             r = random.randint(1, 100)
                             if r <= iws['H' + str(i+1)].value:
                                 P = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
@@ -461,17 +485,17 @@ class Fun(Cog_Extension):
                                 iws['B' + str(j+1)].value -= p
 
                                 if isProps == 0:
-                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} Gcoin)')
+                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)')
                                 elif isProps == 1:
-                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} Gcoin)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **MP5** so all the **{name}**\'s Gcoin was taken away meow!')
+                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **MP5** so all the **{name}**\'s Gcoin was taken away meow!')
                                 elif isProps == 2:
-                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} Gcoin)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Desert Eagle** so half the **{name}**\'s Gcoin was taken away meow!')
+                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Desert Eagle** so half the **{name}**\'s Gcoin was taken away meow!')
                                 else:
-                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} Gcoin)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Knife** so **{ctx.author}** robbed 2x Gcoin meow!')
+                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Knife** so **{ctx.author}** robbed 2x <:Gcoin:736650744861556749> meow!')
                                 
                             else:
                                 iws['B' + str(i+1)].value -= 200
-                                await ctx.send(f'<a:money:730029539815850045> **{ctx.author}** failed to rob the property form **{name}**\n:police_car: The MeowPolice took your property away meow~(200 Gcoin)')
+                                await ctx.send(f'<a:money:730029539815850045> **{ctx.author}** failed to rob the property form **{name}**\n:police_car: The MeowPolice took your property away meow~(200 <:Gcoin:736650744861556749>)')
                             if iws['N' + str(i+1)].value == 1 and iws['P' + str(i+1)].value > 0:
                                 iws['P' + str(i+1)].value -= 1
                             elif iws['M' + str(i+1)].value == 1 and iws['O' + str(i+1)].value > 0:
@@ -539,7 +563,7 @@ class Fun(Cog_Extension):
         iwb.save('item.xlsx')
 
     @commands.command()
-    @commands.cooldown(1, 3600, commands.BucketType.user)
+    @commands.cooldown(2, 1800, commands.BucketType.user)
     async def pick(self, ctx):
         count(ctx)
         if iws['A1'].value != None:
