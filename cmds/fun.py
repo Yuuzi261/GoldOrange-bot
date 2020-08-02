@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from openpyxl import load_workbook
 from core.classes import Cog_Extension
+import pygsheets
 import datetime
 import random
 import json
@@ -10,26 +11,26 @@ with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
 
 def count(c):
-    wb = load_workbook('cmdcount.xlsx')
-    ws = wb.active
-    if ws['A1'].value != None:
-        a = int(ws['A1'].value)
+    cwb = load_workbook('cmdcount.xlsx')
+    cws = cwb.active
+    if cws['A1'].value != None:
+        a = int(cws['A1'].value)
         for i in range(a):
-            if str(ws['B' + str(i+1)].value) == str(c.author.id):
-                ws['C' + str(i+1)].value = int(ws['C' + str(i+1)].value) + 1
+            if str(cws['B' + str(i+1)].value) == str(c.author.id):
+                cws['C' + str(i+1)].value = int(cws['C' + str(i+1)].value) + 1
                 break
             else:
                 if i == (a-1):
-                    ws['A1'].value = int(ws['A1'].value) + 1
-                    ws['B' + str(i+2)].value = str(c.author.id)
-                    ws['C' + str(i+2)].value = 1
+                    cws['A1'].value = int(cws['A1'].value) + 1
+                    cws['B' + str(i+2)].value = str(c.author.id)
+                    cws['C' + str(i+2)].value = 1
     else:
-        ws['A1'].value = 1
-        ws['B1'].value = str(c.author.id)
-        ws['C1'].value = 1
+        cws['A1'].value = 1
+        cws['B1'].value = str(c.author.id)
+        cws['C1'].value = 1
 
-    wb.save('cmdcount.xlsx')
-    wb.close()
+    cwb.save('cmdcount.xlsx')
+    cwb.close()
 
 def pickcount(c):
     wb = load_workbook('item.xlsx')
@@ -112,10 +113,14 @@ def mine():
 
 iwb = load_workbook('item.xlsx')
 iws = iwb.active
+gc = pygsheets.authorize(service_account_file='gcat-project-42105335-d7a31cee2783.json')
+survey_url = 'https://docs.google.com/spreadsheets/d/1L8jP0oFsWRd0fDrPqlgs6vGJLwMaYd5S35-l7Quoc4U/edit#gid=0'
+sh = gc.open_by_url(survey_url)
+ws = sh.worksheet_by_title('sheet1')
 k = -1
 
 class Fun(Cog_Extension):
-    global iwb, iws
+    global iwb, iws, sh, ws
 
     @commands.command()
     @commands.is_owner()
@@ -457,32 +462,42 @@ class Fun(Cog_Extension):
     @commands.cooldown(2, 10800, commands.BucketType.user)
     async def rob(self, ctx, name: discord.Member):
         count(ctx)
-        if iws['A1'].value != None:
-            a = int(iws['A1'].value)
+        if ws.get_value('A1') != None:
+            a = int(ws.get_value('A1'))
+            L = ws.get_col(1)[:a+1]
+            i, j = 1, 1
             isfind = False
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
-                    for j in range(1, a + 1):
-                        if str(iws['A' + str(j+1)].value) == str(name.id):
-                            if iws['H' + str(i+1)].value < 20:
+            for x in L:
+                if x == L[0]:
+                    continue
+                i+=1
+                # print(f'{x},{i}')
+                if str(x) == str(ctx.author.id):
+                    for y in L:
+                        if y == L[0]:
+                            continue
+                        j+=1
+                        # print(f'{y},{j}')
+                        if str(y) == str(name.id):
+                            if float(ws.get_value('H' + str(i))) < 20:
                                 isProps = 0
-                                iws['H' + str(i+1)].value += 1
-                                await ctx.send(f'<a:hand:732937258868539483> **{ctx.author}**\'s Robbery skills point + 0.5 ({iws["H" + str(i+1)].value}/20)')
+                                ws.update_value('H' + str(i), float(ws.get_value('H' + str(i))) + 0.5)
+                                await ctx.send(f'<a:hand:732937258868539483> **{ctx.author}**\'s Robbery skills point + 0.5 ({ws.get_value("H" + str(i))}/20)')
                             r = random.randint(1, 100)
-                            if r <= iws['H' + str(i+1)].value:
+                            if r <= float(ws.get_value('H' + str(i))):
                                 P = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
                                 p = random.choice(P)
-                                if iws['N' + str(i+1)].value == 1 and iws['P' + str(i+1)].value > 0:
-                                    p = iws['B' + str(j+1)].value
+                                if int(ws.get_value('N' + str(i))) == 1 and int(ws.get_value('P' + str(i))) > 0:
+                                    p = ws.get_value('B' + str(j))
                                     isProps = 1
-                                elif iws['M' + str(i+1)].value == 1 and iws['O' + str(i+1)].value > 0:
-                                    p = iws['B' + str(j+1)].value//2
+                                elif int(ws.get_value('M' + str(i))) == 1 and int(ws.get_value('O' + str(i))) > 0:
+                                    p = int(ws.get_value('B' + str(j)))//2
                                     isProps = 2
-                                elif iws['L' + str(i+1)].value == 1:
+                                elif int(ws.get_value('L' + str(i))) == 1:
                                     p*=2
                                     isProps = 3
-                                iws['B' + str(i+1)].value += p
-                                iws['B' + str(j+1)].value -= p
+                                ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) + int(p))
+                                ws.update_value('B' + str(j), int(ws.get_value('B' + str(j))) - int(p))
 
                                 if isProps == 0:
                                     await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)')
@@ -494,12 +509,14 @@ class Fun(Cog_Extension):
                                     await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Knife** so **{ctx.author}** robbed 2x <:Gcoin:736650744861556749> meow!')
                                 
                             else:
-                                iws['B' + str(i+1)].value -= 200
+                                ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) - 200)
                                 await ctx.send(f'<a:money:730029539815850045> **{ctx.author}** failed to rob the property form **{name}**\n:police_car: The MeowPolice took your property away meow~(200 <:Gcoin:736650744861556749>)')
-                            if iws['N' + str(i+1)].value == 1 and iws['P' + str(i+1)].value > 0:
-                                iws['P' + str(i+1)].value -= 1
-                            elif iws['M' + str(i+1)].value == 1 and iws['O' + str(i+1)].value > 0:
-                                iws['O' + str(i+1)].value -= 1
+                            
+                            if int(ws.get_value('N' + str(i))) == 1 and int(ws.get_value('P' + str(i))) > 0:
+                                print('dododo')
+                                ws.update_value('P' + str(i), int(ws.get_value('P' + str(i))) - 1)
+                            elif int(ws.get_value('M' + str(i))) == 1 and int(ws.get_value('O' + str(i))) > 0:
+                                ws.update_value('O' + str(i), int(ws.get_value('O' + str(i))) - 1)
                             isfind = True
                             break
                         else:
@@ -511,8 +528,6 @@ class Fun(Cog_Extension):
                         await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
         else:
             await ctx.send('can\'t find any user')
-
-        iwb.save('item.xlsx')
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
