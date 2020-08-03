@@ -443,15 +443,20 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 80000, commands.BucketType.user)
     async def daily(self, ctx):
         count(ctx)
-        if iws['A1'].value != None:
+        if ws.get_value('A1') != None:
             a = int(iws['A1'].value)
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
-                    iws['B' + str(i+1)].value += 500
+            L = ws.get_col(1)[:a+1]
+            i = 1
+            for x in L:
+                if x == L[0]:
+                    continue
+                i+=1
+                if str(ws.get_value('A' + str(i))) == str(ctx.author.id):
+                    ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) + 500)
                     await ctx.send(f':moneybag: **{ctx.author}** earned the daily reward meow!')
                     break
                 else:
-                    if i == a:
+                    if i == a+1:
                         await ctx.send('You don\'t have an account(enter .pick first meow!)')
         else:
             await ctx.send('can\'t find any user')
@@ -520,11 +525,11 @@ class Fun(Cog_Extension):
                             isfind = True
                             break
                         else:
-                            if j == a:
+                            if j == a+1:
                                 isfind = True
                                 await ctx.send(f':x: **{name}** didn\'t have an account meow!')
                 else:
-                    if i == a and not(isfind):
+                    if i == (a+1) and not(isfind):
                         await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
         else:
             await ctx.send('can\'t find any user')
@@ -581,43 +586,47 @@ class Fun(Cog_Extension):
     @commands.cooldown(2, 1800, commands.BucketType.user)
     async def pick(self, ctx):
         count(ctx)
-        if iws['A1'].value != None:
-            a = int(iws['A1'].value)
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
+        if ws.get_value('A1') != '':
+            a = int(ws.get_value('A1'))
+            L = ws.get_col(1)[:a+1]
+            i = 1
+            for x in L:
+                if x == L[0]:
+                    continue
+                i+=1
+                if str(x) == str(ctx.author.id):
                     it, num = mine()
-                    if iws['K' + str(i+1)].value > 0:
-                        iws['K' + str(i+1)].value -= 1
+                    if int(ws.get_value('K' + str(i))) > 0:
+                        ws.update_value('K' + str(i), int(ws.get_value('K' + str(i))) - 1)
                         num*=4
-                        await ctx.send(f':boom: You blasted a HUGE hole and you found **{num}** **{iws[it + "1"].value}**!(x4 income)')
-                    elif iws['J' + str(i+1)].value > 0:
-                        iws['J' + str(i+1)].value -= 1
+                        await ctx.send(f':boom: You blasted a HUGE hole and you found **{num}** **{ws.get_value(it + "1")}**!(x4 income)')
+                    elif int(ws.get_value('J' + str(i))) > 0:
+                        ws.update_value('J' + str(i), int(ws.get_value('J' + str(i))) - 1)
                         num*=2
-                        await ctx.send(f':boom: You blasted a BIG hole and you found **{num}** **{iws[it + "1"].value}**!(x2 income)')
+                        await ctx.send(f':boom: You blasted a BIG hole and you found **{num}** **{ws.get_value(it + "1")}**!(x2 income)')
                     else:
-                        await ctx.send(f'You pick up **{num}** **{iws[it + "1"].value}**!')
-                    iws[it + str(i+1)].value += num
+                        await ctx.send(f'You pick up **{num}** **{ws.get_value(it + "1")}**!')
+                    ws.update_value(it + str(i), int(ws.get_value(it + str(i))) + num)
                     break
                 else:
-                    if i == a:
-                        iws['A1'].value = int(iws['A1'].value) + 1
+                    if i == a+1:
+                        ws.update_value('A1', a+1)
                         nL = [0] * 16
-                        iws.append(nL)
-                        iws['A' + str(i+2)].value = str(ctx.author.id)
+                        ws.update_row(a+2, nL)
+                        ws.update_value('A' + str(i+1), str(ctx.author.id))
                         it, num = mine()
-                        iws[it + str(i+2)].value += num
-                        await ctx.send(f'You pick up **{num}** **{iws[it + "1"].value}**!')
+                        ws.update_value(it + str(i+1), int(ws.get_value(it + str(i+1))) + num)
+                        await ctx.send(f'You pick up **{num}** **{ws.get_value(it + "1")}**!')
         else:
-            iws['A1'].value = 1
+            ws.update_value('A1', 1)
             nL = [0] * 16
-            iws.append(nL)
-            iws['A2'].value = str(ctx.author.id)
-            it, name = mine()
-            iws[it + '2'].value += num
-            await ctx.send(f'You pick up **{num}** **{iws[it + "1"].value}**!')
+            ws.update_row(2, nL)
+            ws.update_value('A2', str(ctx.author.id))
+            it, num = mine()
+            ws.update_value(it + '2', int(ws.get_value(it + '2')) + num)
+            await ctx.send(f'You pick up **{num}** **{ws.get_value(it + "1")}**!')
 
         pickcount(ctx)
-        iwb.save('item.xlsx')
 
     @commands.group()
     @commands.cooldown(1, 10, commands.BucketType.user)
