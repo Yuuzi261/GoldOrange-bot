@@ -378,7 +378,6 @@ class Fun(Cog_Extension):
         # embed.add_field(name=":small_orange_diamond:Comming S∞n", value="<:Gcoin:736650744861556749> ??", inline=True)
         embed.set_footer(text="Thank you for coming meow~")
         await ctx.send(embed=embed)
-        iwb.save('item.xlsx')
 
     @commands.command()
     @commands.cooldown(1, 600, commands.BucketType.user)
@@ -447,9 +446,7 @@ class Fun(Cog_Extension):
             a = int(iws['A1'].value)
             L = ws.get_col(1)[:a+1]
             i = 1
-            for x in L:
-                if x == L[0]:
-                    continue
+            for x in L[1:]:
                 i+=1
                 if str(ws.get_value('A' + str(i))) == str(ctx.author.id):
                     ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) + 500)
@@ -461,8 +458,6 @@ class Fun(Cog_Extension):
         else:
             await ctx.send('can\'t find any user')
 
-        iwb.save('item.xlsx')
-
     @commands.command()
     @commands.cooldown(2, 10800, commands.BucketType.user)
     async def rob(self, ctx, name: discord.Member):
@@ -472,15 +467,11 @@ class Fun(Cog_Extension):
             L = ws.get_col(1)[:a+1]
             i, j = 1, 1
             isfind = False
-            for x in L:
-                if x == L[0]:
-                    continue
+            for x in L[1:]:
                 i+=1
                 # print(f'{x},{i}')
                 if str(x) == str(ctx.author.id):
-                    for y in L:
-                        if y == L[0]:
-                            continue
+                    for y in L[1:]:
                         j+=1
                         # print(f'{y},{j}')
                         if str(y) == str(name.id):
@@ -586,13 +577,11 @@ class Fun(Cog_Extension):
     @commands.cooldown(2, 1800, commands.BucketType.user)
     async def pick(self, ctx):
         count(ctx)
-        if ws.get_value('A1') != '':
+        if ws.get_value('A1') != None:
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i = 1
-            for x in L:
-                if x == L[0]:
-                    continue
+            for x in L[1:]:
                 i+=1
                 if str(x) == str(ctx.author.id):
                     it, num = mine()
@@ -632,14 +621,17 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def sell(self, ctx):
         global k
-        if iws['A1'].value != None:
-            a = int(iws['A1'].value)
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
-                    k = i+1
+        if ws.get_value('A1') != None:
+            a = int(ws.get_value('A1'))
+            L = ws.get_col(1)[:a+1]
+            i = 1
+            for x in L[1:]:
+                i+=1
+                if str(ws.get_value('A' + str(i))) == str(ctx.author.id):
+                    k = i
                     break
                 else:
-                    if i == a:
+                    if i == a+1:
                         await ctx.send('You don\'t have any property')
         else:
             await ctx.send('can\'t find any user')
@@ -649,71 +641,66 @@ class Fun(Cog_Extension):
     async def Copper(self, ctx, amount = None):
         if amount != None:
             amount = int(amount)
-            if amount > iws['C' + str(k)].value:
+            if amount > int(ws.get_value('C' + str(k))) or amount <= 0:
                 await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
                 return
         else:
-            amount = iws['C' + str(k)].value
-        iws['B' + str(k)].value += amount*2
-        iws['C' + str(k)].value -= amount
+            amount = int(ws.get_value('C' + str(k)))
+        ws.update_value('B' + str(k), int(ws.get_value('B' + str(k))) + amount*2)
+        ws.update_value('C' + str(k), int(ws.get_value('C' + str(k))) - amount)
         await ctx.send(f'**{amount} Copper** sold successfully meow!')
-        iwb.save('item.xlsx')
 
     @sell.command()
     async def Silver(self, ctx, amount = None):
         if amount != None:
             amount = int(amount)
-            if amount > iws['D' + str(k)].value:
+            if amount > int(ws.get_value('D' + str(k))) or amount <= 0:
                 await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
                 return
         else:
-            amount = iws['D' + str(k)].value
-        iws['B' + str(k)].value += amount*20
-        iws['D' + str(k)].value -= amount
+            amount = int(ws.get_value('D' + str(k)))
+        ws.update_value('B' + str(k), int(ws.get_value('B' + str(k))) + amount*20)
+        ws.update_value('D' + str(k), int(ws.get_value('D' + str(k))) - amount)
         await ctx.send(f'**{amount} Silver** sold successfully meow!')
-        iwb.save('item.xlsx')
 
     @sell.command()
     async def Gold(self, ctx, amount = None):
         if amount != None:
             amount = int(amount)
-            if amount > iws['E' + str(k)].value:
+            if amount > int(ws.get_value('E' + str(k))) or amount <= 0:
                 await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
                 return
         else:
-            amount = iws['E' + str(k)].value
-        iws['B' + str(k)].value += amount*200
-        iws['E' + str(k)].value -= amount
+            amount = int(ws.get_value('E' + str(k)))
+        ws.update_value('B' + str(k), int(ws.get_value('B' + str(k))) + amount*200)
+        ws.update_value('E' + str(k), int(ws.get_value('E' + str(k))) - amount)
         await ctx.send(f'**{amount} Gold** sold successfully meow!')
-        iwb.save('item.xlsx')
 
     @sell.command()
     async def Diamond(self, ctx, amount = None):
         if amount != None:
             amount = int(amount)
-            if amount > iws['F' + str(k)].value:
+            if amount > int(ws.get_value('F' + str(k))) or amount <= 0:
                 await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
                 return
         else:
-            amount = iws['F' + str(k)].value
-        iws['B' + str(k)].value += amount*2000
-        iws['F' + str(k)].value -= amount
+            amount = int(ws.get_value('F' + str(k)))
+        ws.update_value('B' + str(k), int(ws.get_value('B' + str(k))) + amount*2000)
+        ws.update_value('F' + str(k), int(ws.get_value('F' + str(k))) - amount)
         await ctx.send(f'**{amount} Diamond** sold successfully meow!')
-        iwb.save('item.xlsx')
 
     @sell.command()
     async def MG(self, ctx, amount = None):
         if amount != None:
             amount = int(amount)
-            if amount > iws['G' + str(k)].value:
+            if amount > int(ws.get_value('G' + str(k))) or amount <= 0:
                 await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
                 return
         else:
-            amount = iws['G' + str(k)].value
-        iws['B' + str(k)].value += amount*20000
-        iws['G' + str(k)].value -= amount
+            amount = int(ws.get_value('G' + str(k)))
+        ws.update_value('B' + str(k), int(ws.get_value('B' + str(k))) + amount*20000)
+        ws.update_value('G' + str(k), int(ws.get_value('G' + str(k))) - amount)
         await ctx.send(f'**{amount} Miracle Gem** sold successfully meow!')
-        iwb.save('item.xlsx')
 
 
 def setup(bot):
