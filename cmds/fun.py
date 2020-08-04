@@ -236,111 +236,117 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def buy(self, ctx, amount: int, obj):
         count(ctx)
-        a = 0
-        if iws['A1'].value != None:
-            a = int(iws['A1'].value)
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
-                    a = i+1
-                    if iws['B' + str(i+1)].value < 0:
+        loc = 0
+        if amount < 0:
+            await ctx.send(':x: Don\'t try to enter a negative number meow~')
+            return
+        if ws.get_value('A1') != None:
+            a = int(ws.get_value('A1'))
+            L = ws.get_col(1)[:a+1]
+            i = 1
+            for x in L[1:]:
+                i+=1
+                if str(x) == str(ctx.author.id):
+                    loc = i
+                    if int(ws.get_value('B' + str(i))) < 0:
                         await ctx.send(f':x: You are in debt meow!')
                         return
                     break
                 else:
-                    if i == a:
+                    if i == a+1:
                         await ctx.send('You don\'t have an account(enter .pick first meow!)')
         else:
             await ctx.send('can\'t find any user')
         if obj == 'Copper':
-            if iws['B' + str(a)].value - amount*3 >= 0:
-                iws['B' + str(a)].value -= amount*3
-                iws['C' + str(a)].value += amount
+            if int(ws.get_value('B' + str(loc))) - amount*3 >= 0:
+                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*3)
+                ws.update_value('C' + str(loc), int(ws.get_value('C' + str(loc))) + amount)
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Copper** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'Silver':
-            if iws['B' + str(a)].value - amount*30 >= 0:
-                iws['B' + str(a)].value -= amount*30
-                iws['D' + str(a)].value += amount
+            if int(ws.get_value('B' + str(loc))) - amount*30 >= 0:
+                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*30)
+                ws.update_value('D' + str(loc), int(ws.get_value('D' + str(loc))) + amount)
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Silver** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'Gold':
-            if iws['B' + str(a)].value - amount*400 >= 0:
-                iws['B' + str(a)].value -= amount*400
-                iws['E' + str(a)].value += amount
+            if int(ws.get_value('B' + str(loc))) - amount*400 >= 0:
+                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*400)
+                ws.update_value('E' + str(loc), int(ws.get_value('E' + str(loc))) + amount)
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Gold** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'Diamond':
-            if iws['B' + str(a)].value - amount*8000 >= 0:
-                iws['B' + str(a)].value -= amount*8000
-                iws['F' + str(a)].value += amount
+            if int(ws.get_value('B' + str(loc))) - amount*8000 >= 0:
+                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*8000)
+                ws.update_value('F' + str(loc), int(ws.get_value('F' + str(loc))) + amount)
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Diamond** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'MG':
-            if iws['B' + str(a)].value - amount*400000 >= 0:
-                iws['B' + str(a)].value -= amount*400000
-                iws['G' + str(a)].value += amount
+            if int(ws.get_value('B' + str(loc))) - amount*400000 >= 0:
+                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*400000)
+                ws.update_value('G' + str(loc), int(ws.get_value('G' + str(loc))) + amount)
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Miracle Gem** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'TNT':
-            if iws['B' + str(a)].value - amount*500 >= 0:
-                iws['B' + str(a)].value -= amount*500
-                iws['J' + str(a)].value += amount
+            if int(ws.get_value('B' + str(loc))) - amount*500 >= 0:
+                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*500)
+                ws.update_value('J' + str(loc), int(ws.get_value('J' + str(loc))) + amount)
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} TNT** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif  obj == 'Dynamite':
-            if iws['B' + str(a)].value - amount*1000 >= 0:
-                iws['B' + str(a)].value -= amount*1000
-                iws['K' + str(a)].value += amount
+            if int(ws.get_value('B' + str(loc))) - amount*1000 >= 0:
+                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*1000)
+                ws.update_value('K' + str(loc), int(ws.get_value('K' + str(loc))) + amount)
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Dynamite** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'Knife':
-            if iws['B' + str(a)].value - 5000 >= 0:
-                if iws['L' + str(a)].value == 0:
-                    iws['B' + str(a)].value -= 5000
-                    iws['L' + str(a)].value += 1
+            if int(ws.get_value('B' + str(loc))) - amount*5000 >= 0:
+                if int(ws.get_value('L' + str(loc))) == 0:
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - 5000)
+                    ws.update_value('L' + str(loc), int(ws.get_value('L' + str(loc))) + 1)
                     await ctx.send(f':ballot_box_with_check: It\'s your **Knife** meow!Thank you for coming meow~')
                 else:
                     await ctx.send(f':x: You have owned a Knife meow!')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'DE':
-            if iws['B' + str(a)].value - 35000 >= 0:
-                if iws['M' + str(a)].value == 0:
-                    iws['B' + str(a)].value -= 35000
-                    iws['M' + str(a)].value += 1
+            if int(ws.get_value('B' + str(loc))) - amount*35000 >= 0:
+                if int(ws.get_value('M' + str(loc))) == 0:
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - 35000)
+                    ws.update_value('M' + str(loc), int(ws.get_value('M' + str(loc))) + 1)
                     await ctx.send(f':ballot_box_with_check: It\'s your **Desert Eagle** meow!Thank you for coming meow~')
                 else:
                     await ctx.send(f':x: You have owned a Desert Eagle meow!')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'MP5':
-            if iws['B' + str(a)].value - 50000 >= 0:
-                if iws['N' + str(a)].value == 0:
-                    iws['B' + str(a)].value -= 50000
-                    iws['N' + str(a)].value += 1
+            if int(ws.get_value('B' + str(loc))) - amount*50000 >= 0:
+                if int(ws.get_value('N' + str(loc))) == 0:
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - 50000)
+                    ws.update_value('N' + str(loc), int(ws.get_value('N' + str(loc))) + 1)
                     await ctx.send(f':ballot_box_with_check: It\'s your **MP5** meow!Thank you for coming meow~')
                 else:
                     await ctx.send(f':x: You have owned a MP5 meow!')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'Bullet(DE)':
-            if iws['B' + str(a)].value - amount*100 >= 0:
-                iws['B' + str(a)].value -= amount*100
-                iws['O' + str(a)].value += amount
+            if int(ws.get_value('B' + str(loc))) - amount*100 >= 0:
+                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*100)
+                ws.update_value('O' + str(loc), int(ws.get_value('O' + str(loc))) + amount)
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Bullet(DE)** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
         elif obj == 'Magazine(MP5)':
-            if iws['B' + str(a)].value - amount*200 >= 0:
-                iws['B' + str(a)].value -= amount*200
-                iws['P' + str(a)].value += amount
+            if int(ws.get_value('B' + str(loc))) - amount*200 >= 0:
+                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*200)
+                ws.update_value('P' + str(loc), int(ws.get_value('P' + str(loc))) + amount)
                 await ctx.send(f':ballot_box_with_check: It\'s your **{amount} Magazine(MP5)** meow!Thank you for coming meow~')
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
@@ -364,7 +370,6 @@ class Fun(Cog_Extension):
         #         await ctx.send(f':ballot_box_with_check: You cut down the **RobCD {amount} times ({amount*100}sec)** meow!Thank you for coming meow~')
         #     else:
         #         await ctx.send(f':x: You don\'t have enough money or over the purchase limit of RobCD meow!Try to type less amount meow!')
-        iwb.save('item.xlsx')
 
 
     @commands.command()
