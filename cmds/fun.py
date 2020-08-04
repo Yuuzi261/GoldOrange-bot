@@ -402,57 +402,41 @@ class Fun(Cog_Extension):
         if amount < 0:
             await ctx.send(':x: DON\'t try to rob by by typing “.give” command meow!')
             return
-        if iws['A1'].value != None:
-            a = int(iws['A1'].value)
+        if ws.get_value('A1') != None:
+            a = int(ws.get_value('A1'))
+            L = ws.get_col(1)[:a+1]
+            i, j = 1, 1
             isfind = False
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
-                    for j in range(1, a + 1):
-                        if str(iws['A' + str(j+1)].value) == str(name.id):
+            for x in L[1:]:
+                i+=1
+                if str(x) == str(ctx.author.id):
+                    for y in L[1:]:
+                        j+=1
+                        if str(y) == str(name.id):
                             T = {'Gcoin' : 'B', 'Copper' : 'C', 'Silver' : 'D', 'Gold' : 'E', 'Diamond' : 'F', 'MG' : 'G'}
                             goods = T[typee]
-                            if iws['A' + str(i+1)].value == str(name.id):
+                            if ws.get_value('A' + str(i)) == str(name.id):
                                 await ctx.send(f':x: Don\'t try to give property to yourself meow!')
                                 isfind = True
                                 break
-                            if iws[goods + str(i+1)].value >= amount:
-                                iws[goods + str(i+1)].value -= amount
-                                iws[goods + str(j+1)].value += amount
+                            if int(ws.get_value(goods + str(i))) >= amount:
+                                ws.update_value(goods + str(i), int(ws.get_value(goods + str(i))) - amount)
+                                ws.update_value(goods + str(j), int(ws.get_value(goods + str(j))) + amount)
                             else:
                                 await ctx.send(f':x: **{ctx.author}** don\'t have enough **{typee}** meow!')
+                                return
                             await ctx.send(f':handshake:  **{ctx.author}** gave **{name}** **{amount} {typee}** meow!!')
                             isfind = True
                             break
                         else:
-                            if j == a:
+                            if j == a+1:
                                 isfind = True
                                 await ctx.send(f':x: **{name}** didn\'t have an account meow!')
                 else:
-                    if i == a and not(isfind):
+                    if i == (a+1) and not(isfind):
                         await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
         else:
             await ctx.send('can\'t find any user')
-
-        iwb.save('item.xlsx')
-
-    @commands.command()
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def picktimes(self, ctx):
-        count(ctx)
-        if iws['A1'].value != None:
-            a = int(iws['A1'].value)
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
-                    await ctx.send(f':raised_back_of_hand: **{ctx.author}** has picked {iws["I" + str(i+1)].value} times meow!')
-                    break
-                else:
-                    if i == a:
-                        await ctx.send('You don\'t have an account(enter .pick first meow!)')
-        else:
-            await ctx.send('can\'t find any user')
-
-        iwb.save('item.xlsx')
-
 
     @commands.command()
     @commands.cooldown(1, 80000, commands.BucketType.user)
