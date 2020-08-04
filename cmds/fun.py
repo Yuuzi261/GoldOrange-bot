@@ -177,48 +177,59 @@ class Fun(Cog_Extension):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def rank(self, ctx, name: discord.Member = None):
+    async def info(self, ctx, name: discord.Member = None):
         count(ctx)
-        if iws['A1'].value != None:
+        if ws.get_value('A1') != None:
             if name == None:
                 name = ctx.author
-            a = int(iws['A1'].value)
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(name.id):
+            a = int(ws.get_value('A1'))
+            L = ws.get_col(1)[:a+1]
+            i, j = 1, 1
+            for x in L[1:]:
+                i+=1
+                if str(x) == str(name.id):
                     I = ['B', 'C', 'D', 'E', 'F', 'G']
                     pro = 0
                     val = 1
                     rk = 1
-                    for x in I:
-                        pro += iws[x + str(i+1)].value*val
+                    for y in I:
+                        pro += int(ws.get_value(y + str(i)))*val
                         if val == 1:
                             val = 2
                         else:
                             val*=10
-                    for j in range(1, a + 1):
+                    for z in L[:-1]:
+                        j+=1
                         tpro = 0
                         val = 1
-                        for x in I:
-                            tpro += iws[x + str(j+1)].value*val
+                        for u in I:
+                            tpro += int(ws.get_value(u + str(j)))*val
                             if val == 1:
                                 val = 2
                             else:
                                 val*=10
                         if tpro > pro:
                             rk+=1
-                        
-                    embed=discord.Embed(title=f'{name} is in **#{rk}** meow!!', description=f'Property = **{pro} <:Gcoin:736650744861556749>**', color=0xffe26f)    
+
+                    I = ['H', 'I']
+                    na = str(name)
+                    embed=discord.Embed(title=f'{na[:-5]}\'s info',color=0xffe26f)
+
+                    for it in I:
+                        embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=True)
+
+                    embed.add_field(name=f':small_orange_diamond: **Rank**', value=f'{rk}', inline=True)
+                    embed.add_field(name=f':small_orange_diamond: **Property**', value=f'{pro} <:Gcoin:736650744861556749>', inline=True)
                     break
                 else:
-                    if i == a:
-                        await ctx.send('You are not in rank meow!')
+                    if i == a+1:
+                        await ctx.send('You don\'t have an account(enter .pick first meow!)')
                         return
         else:
             await ctx.send('can\'t find any user')
             return
 
         await ctx.send(embed=embed)
-        iwb.save('item.xlsx')
 
 
     @commands.command()
@@ -443,12 +454,12 @@ class Fun(Cog_Extension):
     async def daily(self, ctx):
         count(ctx)
         if ws.get_value('A1') != None:
-            a = int(iws['A1'].value)
+            a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i = 1
             for x in L[1:]:
                 i+=1
-                if str(ws.get_value('A' + str(i))) == str(ctx.author.id):
+                if str(x) == str(ctx.author.id):
                     ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) + 500)
                     await ctx.send(f':moneybag: **{ctx.author}** earned the daily reward meow!')
                     break
@@ -529,19 +540,23 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def ibag(self, ctx):
         count(ctx)
-        if iws['A1'].value != None:
-            a = int(iws['A1'].value)
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
+        if ws.get_value('A1') != None:
+            a = int(ws.get_value('A1'))
+            L = ws.get_col(1)[:a+1]
+            i = 1
+            for x in L[1:]:
+                i+=1
+                if str(x) == str(ctx.author.id):
                     I = ['J', 'K', 'L', 'M', 'N', 'O', 'P']
-                    embed=discord.Embed(title=f'{ctx.author}\'s backpack',color=0xffe26f)
+                    na = str(ctx.author)
+                    embed=discord.Embed(title=f'{na[:-5]}\'s items',color=0xffe26f)
 
                     for it in I:
-                        embed.add_field(name=f':small_orange_diamond: **{iws[it + "1"].value}**', value=f'{iws[it + str(i+1)].value}', inline=False)
+                        embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=False)
                         
                     break
                 else:
-                    if i == a:
+                    if i == a+1:
                         await ctx.send('You don\'t have any property')
         else:
             await ctx.send('can\'t find any user')
@@ -553,25 +568,28 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def bag(self, ctx):
         count(ctx)
-        if iws['A1'].value != None:
-            a = int(iws['A1'].value)
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(ctx.author.id):
+        if ws.get_value('A1') != None:
+            a = int(ws.get_value('A1'))
+            L = ws.get_col(1)[:a+1]
+            i = 1
+            for x in L[1:]:
+                i+=1
+                if str(x) == str(ctx.author.id):
                     I = ['B', 'C', 'D', 'E', 'F', 'G']
-                    embed=discord.Embed(title=f'{ctx.author}\'s backpack',color=0xffe26f)
+                    na = str(ctx.author)
+                    embed=discord.Embed(title=f'{na[:-5]}\'s backpack',color=0xffe26f)
 
                     for it in I:
-                        embed.add_field(name=f':small_orange_diamond: **{iws[it + "1"].value}**', value=f'{iws[it + str(i+1)].value}', inline=False)
+                        embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=False)
                         
                     break
                 else:
-                    if i == a:
+                    if i == a+1:
                         await ctx.send('You don\'t have any property')
         else:
             await ctx.send('can\'t find any user')
 
         await ctx.send(embed=embed)
-        iwb.save('item.xlsx')
 
     @commands.command()
     @commands.cooldown(2, 1800, commands.BucketType.user)
