@@ -34,7 +34,7 @@ def count(c):
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(status = discord.Status.do_not_disturb, activity=discord.Game('debugging'))
+    await bot.change_presence(status = discord.Status.do_not_disturb, activity=discord.Game('.help → get help'))
     print(">> Bot is online <<")
     
 @bot.event
