@@ -129,7 +129,7 @@ class Fun(Cog_Extension):
     async def sg(self, ctx, amount: int, typee, name: discord.Member = None):
         count(ctx)
         if name == None:
-            if ws.get_value('A1') != None:
+            if ws.get_value('A1') != '':
                 a = int(ws.get_value('A1'))
                 L = ws.get_col(1)[:a+1]
                 i = 1
@@ -163,7 +163,7 @@ class Fun(Cog_Extension):
     @commands.is_owner()
     async def sb(self, ctx, name: discord.Member):
         count(ctx)
-        if ws.get_value('A1') != None:
+        if ws.get_value('A1') != '':
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i = 1
@@ -190,7 +190,7 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def info(self, ctx, name: discord.Member = None):
         count(ctx)
-        if ws.get_value('A1') != None:
+        if ws.get_value('A1') != '':
             if name == None:
                 name = ctx.author
             a = int(ws.get_value('A1'))
@@ -237,7 +237,7 @@ class Fun(Cog_Extension):
         if amount < 0:
             await ctx.send(':x: Don\'t try to enter a negative number meow~')
             return
-        if ws.get_value('A1') != None:
+        if ws.get_value('A1') != '':
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i = 1
@@ -411,7 +411,7 @@ class Fun(Cog_Extension):
         if amount < 0:
             await ctx.send(':x: DON\'t try to rob by by typing “.give” command meow!')
             return
-        if ws.get_value('A1') != None:
+        if ws.get_value('A1') != '':
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i, j = 1, 1
@@ -453,7 +453,7 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 80000, commands.BucketType.user)
     async def daily(self, ctx):
         count(ctx)
-        if ws.get_value('A1') != None:
+        if ws.get_value('A1') != '':
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i = 1
@@ -475,7 +475,7 @@ class Fun(Cog_Extension):
     @commands.cooldown(2, 10800, commands.BucketType.user)
     async def rob(self, ctx, name: discord.Member):
         count(ctx)
-        if ws.get_value('A1') != None:
+        if ws.get_value('A1') != '':
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i, j = 1, 1
@@ -545,7 +545,7 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def ibag(self, ctx):
         count(ctx)
-        if ws.get_value('A1') != None:
+        if ws.get_value('A1') != '':
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i = 1
@@ -572,7 +572,7 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def bag(self, ctx):
         count(ctx)
-        if ws.get_value('A1') != None:
+        if ws.get_value('A1') != '':
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i = 1
@@ -599,7 +599,7 @@ class Fun(Cog_Extension):
     @commands.cooldown(2, 1800, commands.BucketType.user)
     async def pick(self, ctx):
         count(ctx)
-        if ws.get_value('A1') != None:
+        if ws.get_value('A1') != '':
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i = 1
@@ -646,7 +646,7 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def sell(self, ctx):
         global k
-        if ws.get_value('A1') != None:
+        if ws.get_value('A1') != '':
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
             i = 1
