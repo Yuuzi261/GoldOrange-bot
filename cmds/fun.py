@@ -33,16 +33,19 @@ def count(c):
     cwb.close()
 
 def pickcount(c):
-    wb = load_workbook('item.xlsx')
-    ws = wb.active
-    if iws['A1'].value != None:
-        a = int(iws['A1'].value)
-        for i in range(1, a + 1):
-            if str(iws['A' + str(i+1)].value) == str(c.author.id):
-                iws['I' + str(i+1)].value += 1
-                break
-
-    iwb.save('item.xlsx')
+    gc = pygsheets.authorize(service_account_file='gcat-project-42105335-d7a31cee2783.json')
+    survey_url = 'https://docs.google.com/spreadsheets/d/1L8jP0oFsWRd0fDrPqlgs6vGJLwMaYd5S35-l7Quoc4U/edit#gid=0'
+    sh = gc.open_by_url(survey_url)
+    ws = sh.worksheet_by_title('sheet1')
+    if ws.get_value('A1') != None:
+        a = int(ws.get_value('A1'))
+        L = ws.get_col(1)[:a+1]
+        i = 1
+        for x in L[1:]:
+            i+=1
+            if str(x) == str(c.author.id):
+                ws.update_value('I' + str(i), int(ws.get_value('I' + str(i))) + 1)
+            break
 
 def mine():
     r = random.randint(1, 100)
@@ -124,56 +127,63 @@ class Fun(Cog_Extension):
 
     @commands.command()
     @commands.is_owner()
-    async def system_give(self, ctx, amount: int, typee, name: discord.Member = None):
+    async def sg(self, ctx, amount: int, typee, name: discord.Member = None):
         count(ctx)
         if name == None:
-            if iws['A1'].value != None:
-                a = int(iws['A1'].value)
-                for i in range(1, a + 1):
-                    iws[typee + str(i+1)].value += amount
+            if ws.get_value('A1') != None:
+                a = int(ws.get_value('A1'))
+                L = ws.get_col(1)[:a+1]
+                i = 1
+                for x in L[1:]:
+                    i+=1
+                    ws.update_value(typee + str(i), int(ws.get_value(typee + str(i))) + amount)
             else:
                 await ctx.send('can\'t find any user')
 
             await ctx.send(f'Give EVERYONE **{amount} {iws[typee + "1"].value}** meow!!')
         else:
-            if iws['A1'].value != None:
-                a = int(iws['A1'].value)
-                for i in range(1, a + 1):
-                    if str(iws['A' + str(i+1)].value) == str(name.id):
-                        iws[typee + str(i+1)].value += amount
+            if ws.get_value('A1') != None:
+                a = int(ws.get_value('A1'))
+                L = ws.get_col(1)[:a+1]
+                i = 1
+                for x in L[1:]:
+                    i+=1
+                    if str(ws.get_value('A' + str(i))) == str(name.id):
+                        ws.update_value(typee + str(i), int(ws.get_value(typee + str(i))) + amount)
                         await ctx.send(f'Give **{name} {amount} {iws[typee + "1"].value}** meow!!')
                         break
                     else:
-                        if i == a:
+                        if i == a+1:
                             await ctx.send('Can\'t find the user meow')
                 else:
                     await ctx.send('can\'t find any user')
-            
-        iwb.save('item.xlsx')
 
     @commands.command()
     @commands.is_owner()
-    async def system_bag(self, ctx, name: discord.Member):
+    async def sb(self, ctx, name: discord.Member):
         count(ctx)
-        if iws['A1'].value != None:
-            a = int(iws['A1'].value)
-            for i in range(1, a + 1):
-                if str(iws['A' + str(i+1)].value) == str(name.id):
+        if ws.get_value('A1') != None:
+            a = int(ws.get_value('A1'))
+            L = ws.get_col(1)[:a+1]
+            i = 1
+            for x in L[1:]:
+                i+=1
+                if str(x) == str(name.id):
                     I = ['B', 'C', 'D', 'E', 'F', 'G', 'J', 'K', 'L', 'M', 'N', 'O', 'P']
-                    embed=discord.Embed(title=f'{name}\'s backpack',color=0xffe26f)
+                    na = str(name)
+                    embed=discord.Embed(title=f'{na[:-5]}\'s backpack',color=0xffe26f)
 
                     for it in I:
-                        embed.add_field(name=f':small_orange_diamond: **{iws[it + "1"].value}**', value=f'{iws[it + str(i+1)].value}', inline=True)
+                        embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=True)
                         
                     break
                 else:
-                    if i == a:
+                    if i == a+1:
                         await ctx.send(f'{name.id} don\'t have any property')
         else:
             await ctx.send('can\'t find any user')
 
         await ctx.send(embed=embed)
-        iwb.save('item.xlsx')
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -607,7 +617,7 @@ class Fun(Cog_Extension):
                 else:
                     if i == a+1:
                         ws.update_value('A1', a+1)
-                        nL = [0] * 16
+                        nL = [0] * 17
                         ws.update_row(a+2, nL)
                         ws.update_value('A' + str(i+1), str(ctx.author.id))
                         it, num = mine()
@@ -615,7 +625,7 @@ class Fun(Cog_Extension):
                         await ctx.send(f'You pick up **{num}** **{ws.get_value(it + "1")}**!')
         else:
             ws.update_value('A1', 1)
-            nL = [0] * 16
+            nL = [0] * 17
             ws.update_row(2, nL)
             ws.update_value('A2', str(ctx.author.id))
             it, num = mine()
