@@ -206,7 +206,7 @@ class Fun(Cog_Extension):
 
                     for it in I:
                         if it == 'Q':
-                            embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{pro} <:Gcoin:736650744861556749>', inline=True)
+                            embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))} <:Gcoin:736650744861556749>', inline=True)
                         else:
                             embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=True)
 
