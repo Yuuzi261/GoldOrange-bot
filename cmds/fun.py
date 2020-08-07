@@ -37,7 +37,7 @@ def pickcount(c):
     survey_url = 'https://docs.google.com/spreadsheets/d/1L8jP0oFsWRd0fDrPqlgs6vGJLwMaYd5S35-l7Quoc4U/edit#gid=0'
     sh = gc.open_by_url(survey_url)
     ws = sh.worksheet_by_title('sheet1')
-    if ws.get_value('A1') != None:
+    if ws.get_value('A1') != '':
         a = int(ws.get_value('A1'))
         L = ws.get_col(1)[:a+1]
         i = 1
@@ -45,7 +45,7 @@ def pickcount(c):
             i+=1
             if str(x) == str(c.author.id):
                 ws.update_value('I' + str(i), int(ws.get_value('I' + str(i))) + 1)
-            break
+                break
 
 def mine():
     r = random.randint(1, 100)
@@ -195,21 +195,14 @@ class Fun(Cog_Extension):
                 name = ctx.author
             a = int(ws.get_value('A1'))
             L = ws.get_col(1)[:a+1]
-            i, j, rk = 1, 1, 1
+            i, j = 1, 1
             for x in L[1:]:
                 i+=1
                 if str(x) == str(name.id):
-                    pro = ws.get_value('Q' + str(i))
-                    for y in L[:-1]:
-                        j+=1
-                        tpro = ws.get_value('Q' + str(j))
-                        if tpro > pro:
-                            rk+=1
-
                     I = ['Q', 'H', 'I']
                     na = str(name)
-                    embed=discord.Embed(title=f'{na[:-5]}\'s info',color=0xffe26f)
-                    embed.add_field(name=f':small_orange_diamond: **Rank**', value=f'#{rk}', inline=True)
+                    embed=discord.Embed(title=f'{na[:-5]}\'s infomation',color=0xffe26f)
+                    # embed.add_field(name=f':small_orange_diamond: **Rank**', value=f'#{rk}', inline=True)
 
                     for it in I:
                         if it == 'Q':
