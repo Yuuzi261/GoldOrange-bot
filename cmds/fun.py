@@ -199,14 +199,15 @@ class Fun(Cog_Extension):
             for x in L[1:]:
                 i+=1
                 if str(x) == str(name.id):
-                    I = ['Q', 'H', 'I']
+                    I = ['R', 'Q', 'H', 'I']
                     na = str(name)
                     embed=discord.Embed(title=f'{na[:-5]}\'s infomation',color=0xffe26f)
-                    # embed.add_field(name=f':small_orange_diamond: **Rank**', value=f'#{rk}', inline=True)
 
                     for it in I:
                         if it == 'Q':
                             embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))} <:Gcoin:736650744861556749>', inline=True)
+                        elif it == 'R':
+                            embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'#{ws.get_value(it + str(i))}', inline=True)
                         else:
                             embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=True)
 
@@ -616,22 +617,24 @@ class Fun(Cog_Extension):
                 else:
                     if i == a+1:
                         ws.update_value('A1', a+1)
-                        nL = [0] * 17
+                        nL = [0] * 18
                         ws.update_row(a+2, nL)
                         ws.update_value('A' + str(i+1), str(ctx.author.id))
                         it, num = mine()
                         await ctx.send(f'You pick up **{num}** **{ws.get_value(it + "1")}**!')
                         ws.update_value(it + str(i+1), int(ws.get_value(it + str(i+1))) + num)
                         ws.update_value('Q' + str(i+1), int(ws.get_value('Q' + str(i+1))) + num*ItDir[it])
+                        ws.update_value('R' + str(i+1), '=RANK(Q' + str(i+1) + ',Q$2:Q$3000)')
         else:
             ws.update_value('A1', 1)
-            nL = [0] * 17
+            nL = [0] * 18
             ws.update_row(2, nL)
             ws.update_value('A2', str(ctx.author.id))
             it, num = mine()
+            await ctx.send(f'You pick up **{num}** **{ws.get_value(it + "1")}**!')
             ws.update_value(it + '2', int(ws.get_value(it + '2')) + num)
             ws.update_value('Q2', int(ws.get_value('Q2')) + num*ItDir[it])
-            await ctx.send(f'You pick up **{num}** **{ws.get_value(it + "1")}**!')
+            ws.update_value('R2', '=RANK(Q2,Q$2:Q$3000)')
 
         pickcount(ctx)
 
