@@ -51,7 +51,7 @@ class Arcaea(Cog_Extension):
         diffs = list(set(diffs).difference(set(temp)))
 
         if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
-            embed=discord.Embed(title="ERROR", color=0xffe26f)
+            embed=discord.Embed(title="ERROR", color=0xff0000)
             embed.add_field(name=".arc", value="Please enter a reasonable difficulty meow~ (7 ~ 11)\n請輸入合理的難度喵~(7 ~ 11)", inline=False)
             embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
@@ -64,7 +64,7 @@ class Arcaea(Cog_Extension):
             resultdiff = random.choice(diffs)
         
         if boo:
-            embed=discord.Embed(title="WARNING", color=0xffe26f)
+            embed=discord.Embed(title="WARNING", color=0xff8000)
             embed.add_field(name=".arc", value="Amazing typing~ Unrecognizable input meow~\nKeep typing in a mess, it's none of my business meow!!\n出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
             await ctx.send(embed=embed)
             
@@ -81,7 +81,7 @@ class Arcaea(Cog_Extension):
         try:
             amount = int(amount)
         except:
-            embed=discord.Embed(title="ERROR", color=0xffe26f)
+            embed=discord.Embed(title="ERROR", color=0xff0000)
             embed.add_field(name=".arcbomb", value="Please enter a reasonable amount meow~(2 ~ 5)\n請輸入合理的數量喵~(2 ~ 5)", inline=False)
             embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)
@@ -104,7 +104,7 @@ class Arcaea(Cog_Extension):
             diffs = list(set(diffs).difference(set(temp)))
 
             if diffs == [] and not("all" in difficulty or "ALL" in difficulty):
-                embed=discord.Embed(title="ERROR", color=0xffe26f)
+                embed=discord.Embed(title="ERROR", color=0xff0000)
                 embed.add_field(name=".arcbomb", value="Please enter a reasonable difficulty meow~ (7 ~ 11)\n請輸入合理的難度喵~(7 ~ 11)", inline=False)
                 embed.set_image(url=(jdata["giraffe"]))
                 await ctx.send(embed=embed)
@@ -124,7 +124,7 @@ class Arcaea(Cog_Extension):
                 nowdiff = random.choice(diffs)
 
             if boo:
-                embed=discord.Embed(title="WARNING", color=0xffe26f)
+                embed=discord.Embed(title="WARNING", color=0xff8000)
                 embed.add_field(name=".arcbomb", value="Amazing typing~ Unrecognizable input meow~\nKeep typing in a mess, it's none of my business meow!!\n出現了無法識別的難度喵~已自動排除了喵~\n你再亂打啊喵~本喵沒在理你的喵!!", inline=False)
                 await ctx.send(embed=embed)
 
@@ -157,7 +157,7 @@ class Arcaea(Cog_Extension):
                 await ctx.send(embed=embed)
 
         else:
-            embed=discord.Embed(title="ERROR", color=0xffe26f)
+            embed=discord.Embed(title="ERROR", color=0xff0000)
             embed.add_field(name=".arcbomb", value="Please enter a reasonable amount meow~(2 ~ 5)\n請輸入合理的數量喵~(2 ~ 5)", inline=False)
             embed.set_image(url=(jdata["giraffe"]))
             await ctx.send(embed=embed)

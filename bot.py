@@ -104,7 +104,27 @@ async def help(ctx, *comad):
         elif comad[0] == 'cal':
             embed.add_field(name="Tool", value=".cal <formula> \nCalculate the answer\n計算算式的答案", inline=False)
         elif comad[0] == 'cnt':
-            embed.add_field(name="Tool", value=".cnt <formula> \nCheck the number of times you have used the commands\n查詢你到目前為止使用指令的次數", inline=False)
+            embed.add_field(name="Tool", value=".cnt <name> \nCheck the number of times you have used the commands\n查詢你到目前為止使用指令的次數", inline=False)
+        elif comad[0] == 'pick':
+            embed.add_field(name="Fun", value=".pick \n...\n使用這個指令展開你的礦工生活!", inline=False)
+        elif comad[0] == 'sell':
+            embed.add_field(name="Fun", value=".sell <mineral> <amount>\n...\n挖到的礦物可以變賣成<:Gcoin:736650411498406009>，擁有了<:Gcoin:736650411498406009>你可以去商店逛逛", inline=False)
+        elif comad[0] == 'daily':
+            embed.add_field(name="Fun", value=".daily \n...\n領取你的每日獎賞!!", inline=False)
+        elif comad[0] == 'rob':
+            embed.add_field(name="Fun", value=".rob <name>\n...\n向其他人搶奪財產!不過要注意，你可能會得面對喵警察的制裁", inline=False)
+        elif comad[0] == 'bag':
+            embed.add_field(name="Fun", value=".bag \n...\n查看你的背包(錢和寶物)", inline=False) 
+        elif comad[0] == 'ibag':
+            embed.add_field(name="Fun", value=".ibag \n...\n查看你的道具", inline=False) 
+        elif comad[0] == 'shop':
+            embed.add_field(name="Fun", value=".shop \n...\n開啟商店(黑市)列表", inline=False) 
+        elif comad[0] == 'buy':
+            embed.add_field(name="Fun", value=".buy <amount> <goods> \n...\n購買寶物或道具", inline=False) 
+        elif comad[0] == 'give':
+            embed.add_field(name="Fun", value=".give <name> <amount> <item> \n...\n贈送指定玩家錢或寶物", inline=False) 
+        elif comad[0] == 'info':
+            embed.add_field(name="Fun", value=".info <name(can be blank)>\n...\n查看玩家的基本訊息", inline=False) 
         else:
             embed.add_field(name="Not Found", value="No such command found\n查無此指令", inline=False)
     
@@ -113,18 +133,17 @@ async def help(ctx, *comad):
     else:   
         embed=discord.Embed(title="桔喵Assistant", description="Command Query", color=0xffe26f)
         embed.set_thumbnail(url="https://i.imgur.com/pms8YGV.png")
-        embed.add_field(name="<a:headbob:732803179103911987>Arcaea", value="arc | arcbomb", inline=False)
-        embed.add_field(name="<a:headbob:732803179103911987>Cytus II", value="c2 | c2bomb", inline=False)
-        embed.add_field(name="<a:headbob:732803179103911987>Deemo", value="dee | deebomb", inline=False)
-        embed.add_field(name="<a:headbob:732803179103911987>Common", value="member | mj | ping | say", inline=False)
-        embed.add_field(name="<a:headbob:732803179103911987>Random", value="choose | mora | rs | rn", inline=False)
-        embed.add_field(name="<a:headbob:732803179103911987>Tool", value="cal | cnt", inline=False)
+        embed.add_field(name=":musical_note: Rhythm Games", value="arc | arcbomb | c2 | c2bomb | dee | deebomb", inline=False)
+        embed.add_field(name=":star: Common", value="member | mj | ping | say", inline=False)
+        embed.add_field(name=":grey_question: Random", value="choose | mora | rs | rn", inline=False)
+        embed.add_field(name=":tools: Tool", value="cal | cnt", inline=False)
+        embed.add_field(name="<:Gcoin:736650744861556749> Fun(BETA)", value="pick | sell | daily | rob | bag | ibag | shop | buy | give | info", inline=False)
         embed.set_footer(text="use .help <cmd> to query the command you want to know")
         await ctx.send(embed=embed)
 
 @bot.event
 async def on_command_error(ctx, error):
-    embed=discord.Embed(title="ERROR", color=0xffe26f)
+    embed=discord.Embed(title="ERROR", color=0xff0000)
 
     if isinstance(error, commands.errors.CommandNotFound):
         return

@@ -44,7 +44,7 @@ class Random(Cog_Extension):
     async def choose(self, ctx, *songs):
         count(ctx)
         result = random.choice(songs)
-        embed=discord.Embed(title="Result", description = f'I choice **{result}** meow~\n本喵決定選 **{result}** 喵~', color=0xffe26f)
+        embed=discord.Embed(title="Result", description = f'I decided to choose **{result}** meow~\n本喵決定選 **{result}** 喵~', color=0xffe26f)
         await ctx.send(embed=embed)
 
     @commands.command()
