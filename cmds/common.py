@@ -70,11 +70,14 @@ class Common(Cog_Extension):
         await ctx.send(embed=embed)
         
     @commands.command() 
-    async def mj(self, ctx, name: discord.Member): 
+    async def mj(self, ctx, name: discord.Member = None): 
         count(ctx)
+        if name == None:
+            name = ctx.author
         for member in ctx.guild.members:
             if member == name:
-                embed=discord.Embed(title=f'{name}\'s joining time',description = f'{member.joined_at}', color=0xffe26f)
+                datetime_str = member.joined_at.date()
+                embed=discord.Embed(title=f'{name.name}\'s joining time',description = f'{datetime_str}', color=0xffe26f)
                 embed.set_footer(text="The displayed time is GMT standard time meow~")
                 await ctx.send(embed=embed)
 

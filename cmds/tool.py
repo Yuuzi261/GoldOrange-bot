@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from openpyxl import load_workbook
 from core.classes import Cog_Extension
+import datetime
 import random
 import json
 
@@ -64,6 +65,36 @@ class Tool(Cog_Extension):
 
         await ctx.send(embed=embed)
         wb.close()
+
+    @commands.command()
+    async def roleinfo(self, ctx, role: discord.Role):
+        count(ctx)
+        rL = role.members
+        if role.hoist:
+            ish = 'yes'
+        else:
+            ish = 'no'
+        if role.mentionable:
+            imen = 'yes'
+        else:
+            imen = 'no'
+        c = str(role.color)[1:]
+        colo = 'https://www.color-hex.com/color/' + str(role.color)[1:]
+        col = 'https://dummyimage.com/80x80/' + c.upper() + '/' + c.upper() + '.jpg'
+        # datetime_str = role.created_at.strftime("%Y/%m/%d %H:%M:%S") 
+        datetime_str = role.created_at.date()
+        embed=discord.Embed(title=f'The information of {role.name}',color=role.color)
+        embed.add_field(name=f'Name', value=role.name, inline=True)
+        embed.add_field(name=f'ID', value=str(role.id), inline=True)
+        embed.add_field(name="Color", value=f'[{str(role.color).upper()}]({colo})', inline=True)
+        embed.set_thumbnail(url=col)
+        embed.add_field(name=f'Mention', value=f'```{role.mention}```', inline=True)
+        embed.add_field(name=f'Members', value=str(len(rL)), inline=True)
+        embed.add_field(name=f'Postion', value=str(role.position), inline=True)
+        embed.add_field(name=f'Hoisted', value=ish, inline=True)
+        embed.add_field(name=f'Mentionable', value=imen, inline=True)
+        embed.set_footer(text=f'Created At • {datetime_str}')
+        await ctx.send(embed=embed)
 
 
 

@@ -353,6 +353,7 @@ class Fun(Cog_Extension):
                 ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*200)
             else:
                 await ctx.send(f':x: You don\'t have enough money meow!')
+        #Future Features 
         # elif obj == 'PickCD':
         #     if iws['Q' + str(a)].value == 1800:
         #         await ctx.send(':x: The minimum for PickCD is 1800 sec meow!')

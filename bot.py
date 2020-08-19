@@ -105,6 +105,8 @@ async def help(ctx, *comad):
             embed.add_field(name="Tool", value=".cal <formula> \nCalculate the answer\n計算算式的答案", inline=False)
         elif comad[0] == 'cnt':
             embed.add_field(name="Tool", value=".cnt <name> \nCheck the number of times you have used the commands\n查詢你到目前為止使用指令的次數", inline=False)
+        elif comad[0] == 'roleinfo':
+            embed.add_field(name="Tool", value=".roleinfo <role> \nGet the information of a role\n查詢身分組資訊", inline=False)
         elif comad[0] == 'pick':
             embed.add_field(name="Fun", value=".pick \n...\n使用這個指令展開你的礦工生活!", inline=False)
         elif comad[0] == 'sell':
@@ -136,7 +138,7 @@ async def help(ctx, *comad):
         embed.add_field(name=":musical_note: Rhythm Games", value="arc | arcbomb | c2 | c2bomb | dee | deebomb", inline=False)
         embed.add_field(name=":star: Common", value="member | mj | ping | say", inline=False)
         embed.add_field(name=":grey_question: Random", value="choose | mora | rs | rn", inline=False)
-        embed.add_field(name=":tools: Tool", value="cal | cnt", inline=False)
+        embed.add_field(name=":tools: Tool", value="cal | cnt | roleinfo", inline=False)
         embed.add_field(name="<:Gcoin:736650744861556749> Fun(BETA)", value="pick | sell | daily | rob | bag | ibag | shop | buy | give | info", inline=False)
         embed.set_footer(text="use .help <cmd> to query the command you want to know")
         await ctx.send(embed=embed)
