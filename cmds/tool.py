@@ -95,6 +95,17 @@ class Tool(Cog_Extension):
         embed.add_field(name=f'Mentionable', value=imen, inline=True)
         embed.set_footer(text=f'Created At • {datetime_str}')
         await ctx.send(embed=embed)
+    
+    @commands.command()
+    async def color(self, ctx, colo: discord.Color):
+        count(ctx)
+        c = str(colo)[1:]
+        co = 'https://www.color-hex.com/color/' + str(colo)[1:]
+        col = 'https://dummyimage.com/80x80/' + c.upper() + '/' + c.upper() + '.jpg'
+        embed=discord.Embed(title=f'The concrete color of {colo}',color=colo)
+        embed.add_field(name="Link", value=f'[{str(colo).upper()}]({co})', inline=True)
+        embed.set_thumbnail(url=col)
+        await ctx.send(embed=embed)
 
 
 
