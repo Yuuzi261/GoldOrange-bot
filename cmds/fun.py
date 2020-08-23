@@ -485,8 +485,8 @@ class Fun(Cog_Extension):
                     for y in L[1:]:
                         j+=1
                         if str(y) == str(name.id):
+                            isProps = 0
                             if float(ws.get_value('H' + str(i))) < 20:
-                                isProps = 0
                                 ws.update_value('H' + str(i), float(ws.get_value('H' + str(i))) + 0.5)
                                 await ctx.send(f'<a:hand:732937258868539483> **{ctx.author}**\'s Robbery skills point + 0.5 ({ws.get_value("H" + str(i))}/20)')
                             r = random.randint(1, 100)
