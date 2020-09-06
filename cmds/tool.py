@@ -88,7 +88,7 @@ class Tool(Cog_Extension):
         embed.add_field(name=f'ID', value=str(role.id), inline=True)
         embed.add_field(name="Color", value=f'[{str(role.color).upper()}]({colo})', inline=True)
         embed.set_thumbnail(url=col)
-        embed.add_field(name=f'Mention', value=f'```{role.mention}```', inline=True)
+        embed.add_field(name=f'Mention', value=f'`{role.mention}`', inline=True)
         embed.add_field(name=f'Members', value=str(len(rL)), inline=True)
         embed.add_field(name=f'Postion', value=str(role.position), inline=True)
         embed.add_field(name=f'Hoisted', value=ish, inline=True)
