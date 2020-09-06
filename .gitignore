@@ -128,3 +128,4 @@ setting.json
 
 # Pyre type checker
 .pyre/
+*.json

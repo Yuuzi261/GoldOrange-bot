@@ -33,8 +33,8 @@ def count(c):
     cwb.close()
 
 def pickcount(c):
-    gc = pygsheets.authorize(service_account_file='gcat-project-42105335-d7a31cee2783.json')
-    survey_url = 'https://docs.google.com/spreadsheets/d/1L8jP0oFsWRd0fDrPqlgs6vGJLwMaYd5S35-l7Quoc4U/edit#gid=0'
+    gc = pygsheets.authorize(service_account_file=jdata["service_account_file"])
+    survey_url = jdata["item_gsheet"]
     sh = gc.open_by_url(survey_url)
     ws = sh.worksheet_by_title('sheet1')
     if ws.get_value('A1') != '':
@@ -114,8 +114,8 @@ def mine():
 
     return it, num
 
-gc = pygsheets.authorize(service_account_file='gcat-project-42105335-d7a31cee2783.json')
-survey_url = 'https://docs.google.com/spreadsheets/d/1L8jP0oFsWRd0fDrPqlgs6vGJLwMaYd5S35-l7Quoc4U/edit#gid=0'
+gc = pygsheets.authorize(service_account_file=jdata["service_account_file"])
+survey_url = jdata["item_gsheet"]
 sh = gc.open_by_url(survey_url)
 ws = sh.worksheet_by_title('sheet1')
 ItDir = {'B' : 1, 'C' : 2, 'D' : 20, 'E' : 200, 'F' : 2000, 'G' : 20000}
