@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from openpyxl import load_workbook
+import datetime
 import json
 import random
 import os
@@ -72,7 +73,7 @@ bot.remove_command('help')
 async def help(ctx, *comad):
     count(ctx)
     if comad:
-        embed=discord.Embed(title="Command Query", color=0xffe26f)
+        embed=discord.Embed(title="Command Query", color=0xffe26f, timestamp=datetime.datetime.utcnow())
         if comad[0] == 'arc':
             embed.add_field(name="Arcaea", value=".arc [difficulty...] \nRandom Arcaea songs\n抽取隨機Arcaea歌曲", inline=False)
         elif comad[0] == 'arcbomb':
@@ -135,7 +136,7 @@ async def help(ctx, *comad):
         await ctx.send(embed=embed)    
         
     else:   
-        embed=discord.Embed(title="桔喵Assistant", description="Command Query", color=0xffe26f)
+        embed=discord.Embed(title="桔喵Assistant", description="Command Query", color=0xffe26f, timestamp=datetime.datetime.utcnow())
         embed.set_thumbnail(url="https://i.imgur.com/pms8YGV.png")
         embed.add_field(name=":musical_note: Rhythm Games", value="arc | arcbomb | c2 | c2bomb | dee | deebomb", inline=False)
         embed.add_field(name=":star: Common", value="member | mj | ping | say", inline=False)
