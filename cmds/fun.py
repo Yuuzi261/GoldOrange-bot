@@ -190,190 +190,192 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def info(self, ctx, name: discord.Member = None):
         count(ctx)
-        if ws.get_value('A1') != '':
-            if name == None:
-                name = ctx.author
-            a = int(ws.get_value('A1'))
-            L = ws.get_col(1)[:a+1]
-            i, j = 1, 1
-            for x in L[1:]:
-                i+=1
-                if str(x) == str(name.id):
-                    I = ['R', 'Q', 'H', 'I']
-                    na = str(name)
-                    embed=discord.Embed(title=f'{na[:-5]}\'s infomation',color=0xffe26f)
+        async with ctx.channel.typing():
+            if ws.get_value('A1') != '':
+                if name == None:
+                    name = ctx.author
+                a = int(ws.get_value('A1'))
+                L = ws.get_col(1)[:a+1]
+                i, j = 1, 1
+                for x in L[1:]:
+                    i+=1
+                    if str(x) == str(name.id):
+                        I = ['R', 'Q', 'H', 'I']
+                        na = str(name)
+                        embed=discord.Embed(title=f'{na[:-5]}\'s infomation',color=0xffe26f)
 
-                    for it in I:
-                        if it == 'Q':
-                            embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))} <:Gcoin:736650744861556749>', inline=True)
-                        elif it == 'R':
-                            embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'#{ws.get_value(it + str(i))}', inline=True)
-                        else:
-                            embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=True)
+                        for it in I:
+                            if it == 'Q':
+                                embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))} <:Gcoin:736650744861556749>', inline=True)
+                            elif it == 'R':
+                                embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'#{ws.get_value(it + str(i))}', inline=True)
+                            else:
+                                embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=True)
 
-                    break
-                else:
-                    if i == a+1:
-                        await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
-                        return
-        else:
-            await ctx.send(':x: can\'t find any user')
-            return
+                        break
+                    else:
+                        if i == a+1:
+                            await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
+                            return
+            else:
+                await ctx.send(':x: can\'t find any user')
+                return
 
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def buy(self, ctx, amount: int, obj):
         count(ctx)
-        loc = 0
-        if amount < 0:
-            await ctx.send(':x: Don\'t try to enter a negative number meow~')
-            return
-        if ws.get_value('A1') != '':
-            a = int(ws.get_value('A1'))
-            L = ws.get_col(1)[:a+1]
-            i = 1
-            for x in L[1:]:
-                i+=1
-                if str(x) == str(ctx.author.id):
-                    loc = i
-                    if int(ws.get_value('B' + str(i))) < 0:
-                        await ctx.send(f':x: You are in debt meow!')
-                        return
-                    break
+        async with ctx.channel.typing():
+            loc = 0
+            if amount < 0:
+                await ctx.send(':x: Don\'t try to enter a negative number meow~')
+                return
+            if ws.get_value('A1') != '':
+                a = int(ws.get_value('A1'))
+                L = ws.get_col(1)[:a+1]
+                i = 1
+                for x in L[1:]:
+                    i+=1
+                    if str(x) == str(ctx.author.id):
+                        loc = i
+                        if int(ws.get_value('B' + str(i))) < 0:
+                            await ctx.send(f':x: You are in debt meow!')
+                            return
+                        break
+                    else:
+                        if i == a+1:
+                            await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
+            else:
+                await ctx.send(':x: can\'t find any user')
+            if obj == 'Copper':
+                if int(ws.get_value('B' + str(loc))) - amount*3 >= 0:
+                    await ctx.send(f':white_check_mark: It\'s your **{amount} Copper** meow!Thank you for coming meow~')
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*3)
+                    ws.update_value('C' + str(loc), int(ws.get_value('C' + str(loc))) + amount)
+                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount)
                 else:
-                    if i == a+1:
-                        await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
-        else:
-            await ctx.send(':x: can\'t find any user')
-        if obj == 'Copper':
-            if int(ws.get_value('B' + str(loc))) - amount*3 >= 0:
-                await ctx.send(f':white_check_mark: It\'s your **{amount} Copper** meow!Thank you for coming meow~')
-                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*3)
-                ws.update_value('C' + str(loc), int(ws.get_value('C' + str(loc))) + amount)
-                ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount)
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif obj == 'Silver':
-            if int(ws.get_value('B' + str(loc))) - amount*30 >= 0:
-                await ctx.send(f':white_check_mark: It\'s your **{amount} Silver** meow!Thank you for coming meow~')
-                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*30)
-                ws.update_value('D' + str(loc), int(ws.get_value('D' + str(loc))) + amount)
-                ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*10)
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif obj == 'Gold':
-            if int(ws.get_value('B' + str(loc))) - amount*400 >= 0:
-                await ctx.send(f':white_check_mark: It\'s your **{amount} Gold** meow!Thank you for coming meow~')
-                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*400)
-                ws.update_value('E' + str(loc), int(ws.get_value('E' + str(loc))) + amount)
-                ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*200)
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif obj == 'Diamond':
-            if int(ws.get_value('B' + str(loc))) - amount*8000 >= 0:
-                await ctx.send(f':white_check_mark: It\'s your **{amount} Diamond** meow!Thank you for coming meow~')
-                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*8000)
-                ws.update_value('F' + str(loc), int(ws.get_value('F' + str(loc))) + amount)
-                ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*6000)
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif obj == 'MG':
-            if int(ws.get_value('B' + str(loc))) - amount*400000 >= 0:
-                await ctx.send(f':white_check_mark: It\'s your **{amount} Miracle Gem** meow!Thank you for coming meow~')
-                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*400000)
-                ws.update_value('G' + str(loc), int(ws.get_value('G' + str(loc))) + amount)
-                ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*380000)
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif obj == 'TNT':
-            if int(ws.get_value('B' + str(loc))) - amount*500 >= 0:
-                await ctx.send(f':white_check_mark: It\'s your **{amount} TNT** meow!Thank you for coming meow~')
-                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*500)
-                ws.update_value('J' + str(loc), int(ws.get_value('J' + str(loc))) + amount)
-                ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*500)
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif  obj == 'Dynamite':
-            if int(ws.get_value('B' + str(loc))) - amount*1000 >= 0:
-                await ctx.send(f':white_check_mark: It\'s your **{amount} Dynamite** meow!Thank you for coming meow~')
-                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*1000)
-                ws.update_value('K' + str(loc), int(ws.get_value('K' + str(loc))) + amount)
-                ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*1000)
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif obj == 'Knife':
-            if int(ws.get_value('B' + str(loc))) - amount*5000 >= 0:
-                if int(ws.get_value('L' + str(loc))) == 0:
-                    await ctx.send(f':white_check_mark: It\'s your **Knife** meow!Thank you for coming meow~')
-                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - 5000)
-                    ws.update_value('L' + str(loc), int(ws.get_value('L' + str(loc))) + 1)
-                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - 5000)
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif obj == 'Silver':
+                if int(ws.get_value('B' + str(loc))) - amount*30 >= 0:
+                    await ctx.send(f':white_check_mark: It\'s your **{amount} Silver** meow!Thank you for coming meow~')
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*30)
+                    ws.update_value('D' + str(loc), int(ws.get_value('D' + str(loc))) + amount)
+                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*10)
                 else:
-                    await ctx.send(f':x: You have owned a Knife meow!')
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif obj == 'DE':
-            if int(ws.get_value('B' + str(loc))) - amount*35000 >= 0:
-                if int(ws.get_value('M' + str(loc))) == 0:
-                    await ctx.send(f':white_check_mark: It\'s your **Desert Eagle** meow!Thank you for coming meow~')
-                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - 35000)
-                    ws.update_value('M' + str(loc), int(ws.get_value('M' + str(loc))) + 1)
-                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - 35000)
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif obj == 'Gold':
+                if int(ws.get_value('B' + str(loc))) - amount*400 >= 0:
+                    await ctx.send(f':white_check_mark: It\'s your **{amount} Gold** meow!Thank you for coming meow~')
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*400)
+                    ws.update_value('E' + str(loc), int(ws.get_value('E' + str(loc))) + amount)
+                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*200)
                 else:
-                    await ctx.send(f':x: You have owned a Desert Eagle meow!')
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif obj == 'MP5':
-            if int(ws.get_value('B' + str(loc))) - amount*50000 >= 0:
-                if int(ws.get_value('N' + str(loc))) == 0:
-                    await ctx.send(f':white_check_mark: It\'s your **MP5** meow!Thank you for coming meow~')
-                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - 50000)
-                    ws.update_value('N' + str(loc), int(ws.get_value('N' + str(loc))) + 1)
-                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - 50000)
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif obj == 'Diamond':
+                if int(ws.get_value('B' + str(loc))) - amount*8000 >= 0:
+                    await ctx.send(f':white_check_mark: It\'s your **{amount} Diamond** meow!Thank you for coming meow~')
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*8000)
+                    ws.update_value('F' + str(loc), int(ws.get_value('F' + str(loc))) + amount)
+                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*6000)
                 else:
-                    await ctx.send(f':x: You have owned a MP5 meow!')
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif obj == 'Bullet(DE)':
-            if int(ws.get_value('B' + str(loc))) - amount*100 >= 0:
-                await ctx.send(f':white_check_mark: It\'s your **{amount} Bullet(DE)** meow!Thank you for coming meow~')
-                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*100)
-                ws.update_value('O' + str(loc), int(ws.get_value('O' + str(loc))) + amount)
-                ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*100)
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        elif obj == 'Magazine(MP5)':
-            if int(ws.get_value('B' + str(loc))) - amount*200 >= 0:
-                await ctx.send(f':white_check_mark: It\'s your **{amount} Magazine(MP5)** meow!Thank you for coming meow~')
-                ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*200)
-                ws.update_value('P' + str(loc), int(ws.get_value('P' + str(loc))) + amount)
-                ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*200)
-            else:
-                await ctx.send(f':x: You don\'t have enough money meow!')
-        #Future Features 
-        # elif obj == 'PickCD':
-        #     if iws['Q' + str(a)].value == 1800:
-        #         await ctx.send(':x: The minimum for PickCD is 1800 sec meow!')
-        #         return
-        #     if iws['B' + str(a)].value - amount*20000 >= 0 and iws['Q' + str(a)].value - amount*100 >= 1800:
-        #         iws['B' + str(a)].value -= amount*20000
-        #         iws['Q' + str(a)].value -= amount*100
-        #         await ctx.send(f':ballot_box_with_check: You cut down the **PickCD {amount} times ({amount*100}sec)** meow!Thank you for coming meow~')
-        #     else:
-        #         await ctx.send(f':x: You don\'t have enough money or over the purchase limit of PickCD meow!Try to type less amount meow!')
-        # elif obj == 'RobCD':
-        #     if iws['R' + str(a)].value == 10800:
-        #         await ctx.send(':x: The minimum for RobCD is 10800 sec meow!')
-        #         return
-        #     if iws['B' + str(a)].value - amount*5000 >= 0 and iws['R' + str(a)].value - amount*100 >= 10800:
-        #         iws['B' + str(a)].value -= amount*5000
-        #         iws['R' + str(a)].value -= amount*100
-        #         await ctx.send(f':ballot_box_with_check: You cut down the **RobCD {amount} times ({amount*100}sec)** meow!Thank you for coming meow~')
-        #     else:
-        #         await ctx.send(f':x: You don\'t have enough money or over the purchase limit of RobCD meow!Try to type less amount meow!')
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif obj == 'MG':
+                if int(ws.get_value('B' + str(loc))) - amount*400000 >= 0:
+                    await ctx.send(f':white_check_mark: It\'s your **{amount} Miracle Gem** meow!Thank you for coming meow~')
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*400000)
+                    ws.update_value('G' + str(loc), int(ws.get_value('G' + str(loc))) + amount)
+                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*380000)
+                else:
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif obj == 'TNT':
+                if int(ws.get_value('B' + str(loc))) - amount*500 >= 0:
+                    await ctx.send(f':white_check_mark: It\'s your **{amount} TNT** meow!Thank you for coming meow~')
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*500)
+                    ws.update_value('J' + str(loc), int(ws.get_value('J' + str(loc))) + amount)
+                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*500)
+                else:
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif  obj == 'Dynamite':
+                if int(ws.get_value('B' + str(loc))) - amount*1000 >= 0:
+                    await ctx.send(f':white_check_mark: It\'s your **{amount} Dynamite** meow!Thank you for coming meow~')
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*1000)
+                    ws.update_value('K' + str(loc), int(ws.get_value('K' + str(loc))) + amount)
+                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*1000)
+                else:
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif obj == 'Knife':
+                if int(ws.get_value('B' + str(loc))) - amount*5000 >= 0:
+                    if int(ws.get_value('L' + str(loc))) == 0:
+                        await ctx.send(f':white_check_mark: It\'s your **Knife** meow!Thank you for coming meow~')
+                        ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - 5000)
+                        ws.update_value('L' + str(loc), int(ws.get_value('L' + str(loc))) + 1)
+                        ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - 5000)
+                    else:
+                        await ctx.send(f':x: You have owned a Knife meow!')
+                else:
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif obj == 'DE':
+                if int(ws.get_value('B' + str(loc))) - amount*35000 >= 0:
+                    if int(ws.get_value('M' + str(loc))) == 0:
+                        await ctx.send(f':white_check_mark: It\'s your **Desert Eagle** meow!Thank you for coming meow~')
+                        ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - 35000)
+                        ws.update_value('M' + str(loc), int(ws.get_value('M' + str(loc))) + 1)
+                        ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - 35000)
+                    else:
+                        await ctx.send(f':x: You have owned a Desert Eagle meow!')
+                else:
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif obj == 'MP5':
+                if int(ws.get_value('B' + str(loc))) - amount*50000 >= 0:
+                    if int(ws.get_value('N' + str(loc))) == 0:
+                        await ctx.send(f':white_check_mark: It\'s your **MP5** meow!Thank you for coming meow~')
+                        ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - 50000)
+                        ws.update_value('N' + str(loc), int(ws.get_value('N' + str(loc))) + 1)
+                        ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - 50000)
+                    else:
+                        await ctx.send(f':x: You have owned a MP5 meow!')
+                else:
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif obj == 'Bullet(DE)':
+                if int(ws.get_value('B' + str(loc))) - amount*100 >= 0:
+                    await ctx.send(f':white_check_mark: It\'s your **{amount} Bullet(DE)** meow!Thank you for coming meow~')
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*100)
+                    ws.update_value('O' + str(loc), int(ws.get_value('O' + str(loc))) + amount)
+                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*100)
+                else:
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            elif obj == 'Magazine(MP5)':
+                if int(ws.get_value('B' + str(loc))) - amount*200 >= 0:
+                    await ctx.send(f':white_check_mark: It\'s your **{amount} Magazine(MP5)** meow!Thank you for coming meow~')
+                    ws.update_value('B' + str(loc), int(ws.get_value('B' + str(loc))) - amount*200)
+                    ws.update_value('P' + str(loc), int(ws.get_value('P' + str(loc))) + amount)
+                    ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*200)
+                else:
+                    await ctx.send(f':x: You don\'t have enough money meow!')
+            #Future Features 
+            # elif obj == 'PickCD':
+            #     if iws['Q' + str(a)].value == 1800:
+            #         await ctx.send(':x: The minimum for PickCD is 1800 sec meow!')
+            #         return
+            #     if iws['B' + str(a)].value - amount*20000 >= 0 and iws['Q' + str(a)].value - amount*100 >= 1800:
+            #         iws['B' + str(a)].value -= amount*20000
+            #         iws['Q' + str(a)].value -= amount*100
+            #         await ctx.send(f':ballot_box_with_check: You cut down the **PickCD {amount} times ({amount*100}sec)** meow!Thank you for coming meow~')
+            #     else:
+            #         await ctx.send(f':x: You don\'t have enough money or over the purchase limit of PickCD meow!Try to type less amount meow!')
+            # elif obj == 'RobCD':
+            #     if iws['R' + str(a)].value == 10800:
+            #         await ctx.send(':x: The minimum for RobCD is 10800 sec meow!')
+            #         return
+            #     if iws['B' + str(a)].value - amount*5000 >= 0 and iws['R' + str(a)].value - amount*100 >= 10800:
+            #         iws['B' + str(a)].value -= amount*5000
+            #         iws['R' + str(a)].value -= amount*100
+            #         await ctx.send(f':ballot_box_with_check: You cut down the **RobCD {amount} times ({amount*100}sec)** meow!Thank you for coming meow~')
+            #     else:
+            #         await ctx.send(f':x: You don\'t have enough money or over the purchase limit of RobCD meow!Try to type less amount meow!')
 
 
     @commands.command()
@@ -403,50 +405,51 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 600, commands.BucketType.user)
     async def give(self, ctx, name: discord.Member, amount: int, typee):
         count(ctx)
-        if amount < 0:
-            await ctx.send(':x: DON\'t try to rob by by typing “.give” command meow!')
-            return
-        if ws.get_value('A1') != '':
-            a = int(ws.get_value('A1'))
-            L = ws.get_col(1)[:a+1]
-            i, j = 1, 1
-            isfind = False
-            for x in L[1:]:
-                i+=1
-                if str(x) == str(ctx.author.id):
-                    for y in L[1:]:
-                        j+=1
-                        if str(y) == str(name.id):
-                            T = {'Gcoin' : 'B', 'Copper' : 'C', 'Silver' : 'D', 'Gold' : 'E', 'Diamond' : 'F', 'MG' : 'G'}
-                            if typee in T:
-                                goods = T[typee]
-                            else:
-                                await ctx.send(':x: You can\'t send out this kind of item meow!')
-                                return
-                            if ws.get_value('A' + str(i)) == str(name.id):
-                                await ctx.send(f':x: Don\'t try to give property to yourself meow!')
+        async with ctx.channel.typing():
+            if amount < 0:
+                await ctx.send(':x: DON\'t try to rob by by typing “.give” command meow!')
+                return
+            if ws.get_value('A1') != '':
+                a = int(ws.get_value('A1'))
+                L = ws.get_col(1)[:a+1]
+                i, j = 1, 1
+                isfind = False
+                for x in L[1:]:
+                    i+=1
+                    if str(x) == str(ctx.author.id):
+                        for y in L[1:]:
+                            j+=1
+                            if str(y) == str(name.id):
+                                T = {'Gcoin' : 'B', 'Copper' : 'C', 'Silver' : 'D', 'Gold' : 'E', 'Diamond' : 'F', 'MG' : 'G'}
+                                if typee in T:
+                                    goods = T[typee]
+                                else:
+                                    await ctx.send(':x: You can\'t send out this kind of item meow!')
+                                    return
+                                if ws.get_value('A' + str(i)) == str(name.id):
+                                    await ctx.send(f':x: Don\'t try to give property to yourself meow!')
+                                    isfind = True
+                                    break
+                                if int(ws.get_value(goods + str(i))) >= amount:
+                                    await ctx.send(f':handshake:  **{ctx.author}** gave **{name}** **{amount} {typee}** meow!!')
+                                    ws.update_value(goods + str(i), int(ws.get_value(goods + str(i))) - amount)
+                                    ws.update_value(goods + str(j), int(ws.get_value(goods + str(j))) + amount)
+                                    ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) - amount*ItDir[goods])
+                                    ws.update_value('Q' + str(j), int(ws.get_value('Q' + str(j))) + amount*ItDir[goods])
+                                else:
+                                    await ctx.send(f':x: **{ctx.author}** don\'t have enough **{typee}** meow!')
+                                    return
                                 isfind = True
                                 break
-                            if int(ws.get_value(goods + str(i))) >= amount:
-                                await ctx.send(f':handshake:  **{ctx.author}** gave **{name}** **{amount} {typee}** meow!!')
-                                ws.update_value(goods + str(i), int(ws.get_value(goods + str(i))) - amount)
-                                ws.update_value(goods + str(j), int(ws.get_value(goods + str(j))) + amount)
-                                ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) - amount*ItDir[goods])
-                                ws.update_value('Q' + str(j), int(ws.get_value('Q' + str(j))) + amount*ItDir[goods])
                             else:
-                                await ctx.send(f':x: **{ctx.author}** don\'t have enough **{typee}** meow!')
-                                return
-                            isfind = True
-                            break
-                        else:
-                            if j == a+1:
-                                isfind = True
-                                await ctx.send(f':x: **{name}** didn\'t have an account meow!')
-                else:
-                    if i == (a+1) and not(isfind):
-                        await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
-        else:
-            await ctx.send(':x: can\'t find any user')
+                                if j == a+1:
+                                    isfind = True
+                                    await ctx.send(f':x: **{name}** didn\'t have an account meow!')
+                    else:
+                        if i == (a+1) and not(isfind):
+                            await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
+            else:
+                await ctx.send(':x: can\'t find any user')
 
     @commands.command()
     @commands.cooldown(1, 80000, commands.BucketType.user)
@@ -474,172 +477,176 @@ class Fun(Cog_Extension):
     @commands.cooldown(2, 10800, commands.BucketType.user)
     async def rob(self, ctx, name: discord.Member):
         count(ctx)
-        if ws.get_value('A1') != '':
-            a = int(ws.get_value('A1'))
-            L = ws.get_col(1)[:a+1]
-            i, j = 1, 1
-            isfind = False
-            for x in L[1:]:
-                i+=1
-                if str(x) == str(ctx.author.id):
-                    for y in L[1:]:
-                        j+=1
-                        if str(y) == str(name.id):
-                            isProps = 0
-                            if float(ws.get_value('H' + str(i))) < 20:
-                                ws.update_value('H' + str(i), float(ws.get_value('H' + str(i))) + 0.5)
-                                await ctx.send(f'<a:hand:732937258868539483> **{ctx.author}**\'s Robbery skills point + 0.5 ({ws.get_value("H" + str(i))}/20)')
-                            r = random.randint(1, 100)
-                            if r <= float(ws.get_value('H' + str(i))):
-                                P = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-                                p = random.choice(P)
-                                if int(ws.get_value('N' + str(i))) == 1 and int(ws.get_value('P' + str(i))) > 0:
-                                    p = ws.get_value('B' + str(j))
-                                    isProps = 1
-                                elif int(ws.get_value('M' + str(i))) == 1 and int(ws.get_value('O' + str(i))) > 0:
-                                    p = int(ws.get_value('B' + str(j)))//2
-                                    isProps = 2
-                                elif int(ws.get_value('L' + str(i))) == 1:
-                                    p*=2
-                                    isProps = 3
+        async with ctx.channel.typing():
+            if ws.get_value('A1') != '':
+                a = int(ws.get_value('A1'))
+                L = ws.get_col(1)[:a+1]
+                i, j = 1, 1
+                isfind = False
+                for x in L[1:]:
+                    i+=1
+                    if str(x) == str(ctx.author.id):
+                        for y in L[1:]:
+                            j+=1
+                            if str(y) == str(name.id):
+                                isProps = 0
+                                if float(ws.get_value('H' + str(i))) < 20:
+                                    ws.update_value('H' + str(i), float(ws.get_value('H' + str(i))) + 0.5)
+                                    await ctx.send(f'<a:hand:732937258868539483> **{ctx.author}**\'s Robbery skills point + 0.5 ({ws.get_value("H" + str(i))}/20)')
+                                r = random.randint(1, 100)
+                                if r <= float(ws.get_value('H' + str(i))):
+                                    P = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+                                    p = random.choice(P)
+                                    if int(ws.get_value('N' + str(i))) == 1 and int(ws.get_value('P' + str(i))) > 0:
+                                        p = ws.get_value('B' + str(j))
+                                        isProps = 1
+                                    elif int(ws.get_value('M' + str(i))) == 1 and int(ws.get_value('O' + str(i))) > 0:
+                                        p = int(ws.get_value('B' + str(j)))//2
+                                        isProps = 2
+                                    elif int(ws.get_value('L' + str(i))) == 1:
+                                        p*=2
+                                        isProps = 3
 
-                                if isProps == 0:
-                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)')
-                                elif isProps == 1:
-                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **MP5** so all the **{name}**\'s Gcoin was taken away meow!')
-                                elif isProps == 2:
-                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Desert Eagle** so half the **{name}**\'s Gcoin was taken away meow!')
+                                    if isProps == 0:
+                                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)')
+                                    elif isProps == 1:
+                                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **MP5** so all the **{name}**\'s Gcoin was taken away meow!')
+                                    elif isProps == 2:
+                                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Desert Eagle** so half the **{name}**\'s Gcoin was taken away meow!')
+                                    else:
+                                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Knife** so **{ctx.author}** robbed 2x <:Gcoin:736650744861556749> meow!')
+                                    
+                                    ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) + int(p))
+                                    ws.update_value('B' + str(j), int(ws.get_value('B' + str(j))) - int(p))
+                                    ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) + int(p))
+                                    ws.update_value('Q' + str(j), int(ws.get_value('Q' + str(j))) - int(p))
+
+                                    
+                                    
                                 else:
-                                    await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Knife** so **{ctx.author}** robbed 2x <:Gcoin:736650744861556749> meow!')
+                                    await ctx.send(f'<a:money:730029539815850045> **{ctx.author}** failed to rob the property form **{name}**\n:police_car: The MeowPolice took your property away meow~(200 <:Gcoin:736650744861556749>)')
+                                    ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) - 200)
+                                    ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) - 200)
                                 
-                                ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) + int(p))
-                                ws.update_value('B' + str(j), int(ws.get_value('B' + str(j))) - int(p))
-                                ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) + int(p))
-                                ws.update_value('Q' + str(j), int(ws.get_value('Q' + str(j))) - int(p))
-
-                                
-                                
-                            else:
-                                await ctx.send(f'<a:money:730029539815850045> **{ctx.author}** failed to rob the property form **{name}**\n:police_car: The MeowPolice took your property away meow~(200 <:Gcoin:736650744861556749>)')
-                                ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) - 200)
-                                ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) - 200)
-                            
-                            if int(ws.get_value('N' + str(i))) == 1 and int(ws.get_value('P' + str(i))) > 0:
-                                ws.update_value('P' + str(i), int(ws.get_value('P' + str(i))) - 1)
-                            elif int(ws.get_value('M' + str(i))) == 1 and int(ws.get_value('O' + str(i))) > 0:
-                                ws.update_value('O' + str(i), int(ws.get_value('O' + str(i))) - 1)
-                            isfind = True
-                            break
-                        else:
-                            if j == a+1:
+                                if int(ws.get_value('N' + str(i))) == 1 and int(ws.get_value('P' + str(i))) > 0:
+                                    ws.update_value('P' + str(i), int(ws.get_value('P' + str(i))) - 1)
+                                elif int(ws.get_value('M' + str(i))) == 1 and int(ws.get_value('O' + str(i))) > 0:
+                                    ws.update_value('O' + str(i), int(ws.get_value('O' + str(i))) - 1)
                                 isfind = True
-                                await ctx.send(f':x: **{name}** didn\'t have an account meow!')
-                else:
-                    if i == (a+1) and not(isfind):
-                        await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
-        else:
-            await ctx.send(':x: can\'t find any user')
+                                break
+                            else:
+                                if j == a+1:
+                                    isfind = True
+                                    await ctx.send(f':x: **{name}** didn\'t have an account meow!')
+                    else:
+                        if i == (a+1) and not(isfind):
+                            await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
+            else:
+                await ctx.send(':x: can\'t find any user')
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def ibag(self, ctx):
         count(ctx)
-        if ws.get_value('A1') != '':
-            a = int(ws.get_value('A1'))
-            L = ws.get_col(1)[:a+1]
-            i = 1
-            for x in L[1:]:
-                i+=1
-                if str(x) == str(ctx.author.id):
-                    I = ['J', 'K', 'L', 'M', 'N', 'O', 'P']
-                    na = str(ctx.author)
-                    embed=discord.Embed(title=f'{na[:-5]}\'s items',color=0xffe26f)
+        async with ctx.channel.typing():
+            if ws.get_value('A1') != '':
+                a = int(ws.get_value('A1'))
+                L = ws.get_col(1)[:a+1]
+                i = 1
+                for x in L[1:]:
+                    i+=1
+                    if str(x) == str(ctx.author.id):
+                        I = ['J', 'K', 'L', 'M', 'N', 'O', 'P']
+                        na = str(ctx.author)
+                        embed=discord.Embed(title=f'{na[:-5]}\'s items',color=0xffe26f)
 
-                    for it in I:
-                        embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=False)
-                        
-                    break
-                else:
-                    if i == a+1:
-                        await ctx.send(':x: You don\'t have any property')
-        else:
-            await ctx.send(':x: can\'t find any user')
+                        for it in I:
+                            embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=False)
+                            
+                        break
+                    else:
+                        if i == a+1:
+                            await ctx.send(':x: You don\'t have any property')
+            else:
+                await ctx.send(':x: can\'t find any user')
 
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def bag(self, ctx):
         count(ctx)
-        if ws.get_value('A1') != '':
-            a = int(ws.get_value('A1'))
-            L = ws.get_col(1)[:a+1]
-            i = 1
-            for x in L[1:]:
-                i+=1
-                if str(x) == str(ctx.author.id):
-                    I = ['B', 'C', 'D', 'E', 'F', 'G']
-                    na = str(ctx.author)
-                    embed=discord.Embed(title=f'{na[:-5]}\'s backpack',color=0xffe26f)
+        async with ctx.channel.typing():
+            if ws.get_value('A1') != '':
+                a = int(ws.get_value('A1'))
+                L = ws.get_col(1)[:a+1]
+                i = 1
+                for x in L[1:]:
+                    i+=1
+                    if str(x) == str(ctx.author.id):
+                        I = ['B', 'C', 'D', 'E', 'F', 'G']
+                        na = str(ctx.author)
+                        embed=discord.Embed(title=f'{na[:-5]}\'s backpack',color=0xffe26f)
 
-                    for it in I:
-                        embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=False)
-                        
-                    break
-                else:
-                    if i == a+1:
-                        await ctx.send(':x: You don\'t have any property')
-        else:
-            await ctx.send(':x: can\'t find any user')
+                        for it in I:
+                            embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=False)
+                            
+                        break
+                    else:
+                        if i == a+1:
+                            await ctx.send(':x: You don\'t have any property')
+            else:
+                await ctx.send(':x: can\'t find any user')
 
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
     @commands.command()
     @commands.cooldown(2, 1800, commands.BucketType.user)
     async def pick(self, ctx):
         count(ctx)
-        if ws.get_value('A1') != '':
-            a = int(ws.get_value('A1'))
-            L = ws.get_col(1)[:a+1]
-            i = 1
-            for x in L[1:]:
-                i+=1
-                if str(x) == str(ctx.author.id):
-                    it, num = mine()
-                    if int(ws.get_value('K' + str(i))) > 0:
-                        ws.update_value('K' + str(i), int(ws.get_value('K' + str(i))) - 1)
-                        num*=4
-                        await ctx.send(f':boom: You blasted a HUGE hole and you found **{num}** **{ws.get_value(it + "1")}**!(x4 income)')
-                    elif int(ws.get_value('J' + str(i))) > 0:
-                        ws.update_value('J' + str(i), int(ws.get_value('J' + str(i))) - 1)
-                        num*=2
-                        await ctx.send(f':boom: You blasted a BIG hole and you found **{num}** **{ws.get_value(it + "1")}**!(x2 income)')
-                    else:
-                        await ctx.send(f':pick: You pick up **{num}** **{ws.get_value(it + "1")}**!')
-                    ws.update_value(it + str(i), int(ws.get_value(it + str(i))) + num)
-                    ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) + num*ItDir[it])
-                    break
-                else:
-                    if i == a+1:
-                        ws.update_value('A1', a+1)
-                        nL = [0] * 18
-                        ws.update_row(a+2, nL)
-                        ws.update_value('A' + str(i+1), str(ctx.author.id))
+        async with ctx.channel.typing():
+            if ws.get_value('A1') != '':
+                a = int(ws.get_value('A1'))
+                L = ws.get_col(1)[:a+1]
+                i = 1
+                for x in L[1:]:
+                    i+=1
+                    if str(x) == str(ctx.author.id):
                         it, num = mine()
-                        await ctx.send(f':pick: You pick up **{num}** **{ws.get_value(it + "1")}**!')
-                        ws.update_value(it + str(i+1), int(ws.get_value(it + str(i+1))) + num)
-                        ws.update_value('Q' + str(i+1), int(ws.get_value('Q' + str(i+1))) + num*ItDir[it])
-                        ws.update_value('R' + str(i+1), '=RANK(Q' + str(i+1) + ',Q$2:Q$3000)')
-        else:
-            ws.update_value('A1', 1)
-            nL = [0] * 18
-            ws.update_row(2, nL)
-            ws.update_value('A2', str(ctx.author.id))
-            it, num = mine()
-            await ctx.send(f':pick: You pick up **{num}** **{ws.get_value(it + "1")}**!')
-            ws.update_value(it + '2', int(ws.get_value(it + '2')) + num)
-            ws.update_value('Q2', int(ws.get_value('Q2')) + num*ItDir[it])
-            ws.update_value('R2', '=RANK(Q2,Q$2:Q$3000)')
+                        if int(ws.get_value('K' + str(i))) > 0:
+                            ws.update_value('K' + str(i), int(ws.get_value('K' + str(i))) - 1)
+                            num*=4
+                            await ctx.send(f':boom: You blasted a HUGE hole and you found **{num}** **{ws.get_value(it + "1")}**!(x4 income)')
+                        elif int(ws.get_value('J' + str(i))) > 0:
+                            ws.update_value('J' + str(i), int(ws.get_value('J' + str(i))) - 1)
+                            num*=2
+                            await ctx.send(f':boom: You blasted a BIG hole and you found **{num}** **{ws.get_value(it + "1")}**!(x2 income)')
+                        else:
+                            await ctx.send(f':pick: You pick up **{num}** **{ws.get_value(it + "1")}**!')
+                        ws.update_value(it + str(i), int(ws.get_value(it + str(i))) + num)
+                        ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) + num*ItDir[it])
+                        break
+                    else:
+                        if i == a+1:
+                            ws.update_value('A1', a+1)
+                            nL = [0] * 18
+                            ws.update_row(a+2, nL)
+                            ws.update_value('A' + str(i+1), str(ctx.author.id))
+                            it, num = mine()
+                            ws.update_value(it + str(i+1), int(ws.get_value(it + str(i+1))) + num)
+                            ws.update_value('Q' + str(i+1), int(ws.get_value('Q' + str(i+1))) + num*ItDir[it])
+                            ws.update_value('R' + str(i+1), '=RANK(Q' + str(i+1) + ',Q$2:Q$3000)')
+                            await ctx.send(f':pick: You pick up **{num}** **{ws.get_value(it + "1")}**!')
+            else:
+                ws.update_value('A1', 1)
+                nL = [0] * 18
+                ws.update_row(2, nL)
+                ws.update_value('A2', str(ctx.author.id))
+                it, num = mine()
+                ws.update_value(it + '2', int(ws.get_value(it + '2')) + num)
+                ws.update_value('Q2', int(ws.get_value('Q2')) + num*ItDir[it])
+                ws.update_value('R2', '=RANK(Q2,Q$2:Q$3000)')
+                await ctx.send(f':pick: You pick up **{num}** **{ws.get_value(it + "1")}**!')
 
         pickcount(ctx)
 
