@@ -6,6 +6,7 @@ import pygsheets
 import datetime
 import random
 import json
+import pymysql
 
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
@@ -31,21 +32,6 @@ def count(c):
 
     cwb.save('cmdcount.xlsx')
     cwb.close()
-
-def pickcount(c):
-    gc = pygsheets.authorize(service_account_file=jdata["service_account_file"])
-    survey_url = jdata["item_gsheet"]
-    sh = gc.open_by_url(survey_url)
-    ws = sh.worksheet_by_title('sheet1')
-    if ws.get_value('A1') != '':
-        a = int(ws.get_value('A1'))
-        L = ws.get_col(1)[:a+1]
-        i = 1
-        for x in L[1:]:
-            i+=1
-            if str(x) == str(c.author.id):
-                ws.update_value('I' + str(i), int(ws.get_value('I' + str(i))) + 1)
-                break
 
 def mine():
     r = random.randint(1, 100)
@@ -119,6 +105,9 @@ survey_url = jdata["item_gsheet"]
 sh = gc.open_by_url(survey_url)
 ws = sh.worksheet_by_title('sheet1')
 ItDir = {'B' : 1, 'C' : 2, 'D' : 20, 'E' : 200, 'F' : 2000, 'G' : 20000}
+Name_ItDir = {'B' : 'Gcoin', 'C' : 'Copper', 'D' : 'Silver', 'E' : 'Gold', 'F' : 'Diamond', 'G' : 'Miracle Gem'}
+Index_ItDir = {'B' : 1, 'C' : 2, 'D' : 3, 'E' : 4, 'F' : 5, 'G' : 6}
+FieldL = ['ID', 'Gcoin', 'Copper', 'Silver', 'Gold', 'Diamond', 'MiracleGem', 'Robpoint', 'PickTimes', 'TNT', 'Dynamite', 'Knife', 'DesertEagle', 'Bullet', 'MP5', 'Magazine', 'Property']
 k = -1
 
 class Fun(Cog_Extension):
@@ -140,7 +129,7 @@ class Fun(Cog_Extension):
                     ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) + amount*ItDir[typee])
             else:
                 await ctx.send(':x: can\'t find any user')
-                
+
         else:
             if ws.get_value('A1') != None:
                 a = int(ws.get_value('A1'))
@@ -176,7 +165,7 @@ class Fun(Cog_Extension):
 
                     for it in I:
                         embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=True)
-                        
+
                     break
                 else:
                     if i == a+1:
@@ -355,7 +344,7 @@ class Fun(Cog_Extension):
                     ws.update_value('Q' + str(loc), int(ws.get_value('Q' + str(loc))) - amount*200)
                 else:
                     await ctx.send(f':x: You don\'t have enough money meow!')
-            #Future Features 
+            #Future Features
             # elif obj == 'PickCD':
             #     if iws['Q' + str(a)].value == 1800:
             #         await ctx.send(':x: The minimum for PickCD is 1800 sec meow!')
@@ -515,19 +504,19 @@ class Fun(Cog_Extension):
                                         await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Desert Eagle** so half the **{name}**\'s Gcoin was taken away meow!')
                                     else:
                                         await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Knife** so **{ctx.author}** robbed 2x <:Gcoin:736650744861556749> meow!')
-                                    
+
                                     ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) + int(p))
                                     ws.update_value('B' + str(j), int(ws.get_value('B' + str(j))) - int(p))
                                     ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) + int(p))
                                     ws.update_value('Q' + str(j), int(ws.get_value('Q' + str(j))) - int(p))
 
-                                    
-                                    
+
+
                                 else:
                                     await ctx.send(f'<a:money:730029539815850045> **{ctx.author}** failed to rob the property form **{name}**\n:police_car: The MeowPolice took your property away meow~(200 <:Gcoin:736650744861556749>)')
                                     ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) - 200)
                                     ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) - 200)
-                                
+
                                 if int(ws.get_value('N' + str(i))) == 1 and int(ws.get_value('P' + str(i))) > 0:
                                     ws.update_value('P' + str(i), int(ws.get_value('P' + str(i))) - 1)
                                 elif int(ws.get_value('M' + str(i))) == 1 and int(ws.get_value('O' + str(i))) > 0:
@@ -562,7 +551,7 @@ class Fun(Cog_Extension):
 
                         for it in I:
                             embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=False)
-                            
+
                         break
                     else:
                         if i == a+1:
@@ -590,7 +579,7 @@ class Fun(Cog_Extension):
 
                         for it in I:
                             embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=False)
-                            
+
                         break
                     else:
                         if i == a+1:
@@ -605,50 +594,40 @@ class Fun(Cog_Extension):
     async def pick(self, ctx):
         count(ctx)
         async with ctx.channel.typing():
-            if ws.get_value('A1') != '':
-                a = int(ws.get_value('A1'))
-                L = ws.get_col(1)[:a+1]
-                i = 1
-                for x in L[1:]:
-                    i+=1
-                    if str(x) == str(ctx.author.id):
-                        it, num = mine()
-                        if int(ws.get_value('K' + str(i))) > 0:
-                            ws.update_value('K' + str(i), int(ws.get_value('K' + str(i))) - 1)
-                            num*=4
-                            await ctx.send(f':boom: You blasted a HUGE hole and you found **{num}** **{ws.get_value(it + "1")}**!(x4 income)')
-                        elif int(ws.get_value('J' + str(i))) > 0:
-                            ws.update_value('J' + str(i), int(ws.get_value('J' + str(i))) - 1)
-                            num*=2
-                            await ctx.send(f':boom: You blasted a BIG hole and you found **{num}** **{ws.get_value(it + "1")}**!(x2 income)')
-                        else:
-                            await ctx.send(f':pick: You pick up **{num}** **{ws.get_value(it + "1")}**!')
-                        ws.update_value(it + str(i), int(ws.get_value(it + str(i))) + num)
-                        ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) + num*ItDir[it])
-                        break
-                    else:
-                        if i == a+1:
-                            ws.update_value('A1', a+1)
-                            nL = [0] * 18
-                            ws.update_row(a+2, nL)
-                            ws.update_value('A' + str(i+1), str(ctx.author.id))
-                            it, num = mine()
-                            ws.update_value(it + str(i+1), int(ws.get_value(it + str(i+1))) + num)
-                            ws.update_value('Q' + str(i+1), int(ws.get_value('Q' + str(i+1))) + num*ItDir[it])
-                            ws.update_value('R' + str(i+1), '=RANK(Q' + str(i+1) + ',Q$2:Q$3000)')
-                            await ctx.send(f':pick: You pick up **{num}** **{ws.get_value(it + "1")}**!')
-            else:
-                ws.update_value('A1', 1)
-                nL = [0] * 18
-                ws.update_row(2, nL)
-                ws.update_value('A2', str(ctx.author.id))
+            #DB
+            pymysql . install_as_MySQLdb ()
+            conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
+            cursor = conn.cursor()
+            if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {ctx.author.id}"):
+                for r in cursor:
+                    userL = list(r)
                 it, num = mine()
-                ws.update_value(it + '2', int(ws.get_value(it + '2')) + num)
-                ws.update_value('Q2', int(ws.get_value('Q2')) + num*ItDir[it])
-                ws.update_value('R2', '=RANK(Q2,Q$2:Q$3000)')
-                await ctx.send(f':pick: You pick up **{num}** **{ws.get_value(it + "1")}**!')
-
-        pickcount(ctx)
+                if userL[10] > 0:
+                    userL[10] -= 1
+                    num*=4
+                    await ctx.send(f':boom: You blasted a HUGE hole and you found **{num}** **{Name_ItDir[it]}**!(x4 income)')
+                elif userL[9] > 0:
+                    userL[9] -= 1
+                    num*=2
+                    await ctx.send(f':boom: You blasted a BIG hole and you found **{num}** **{Name_ItDir[it]}**!(x2 income)')
+                else:
+                    await ctx.send(f':pick: You pick up **{num}** **{Name_ItDir[it]}**!')
+                userL[Index_ItDir[it]] += num
+                userL[16] += num*ItDir[it]
+                cursor.execute(f"UPDATE item SET {FieldL[9]} = {userL[9]}, {FieldL[10]} = {userL[10]}, {FieldL[16]} = {userL[16]}, {FieldL[Index_ItDir[it]]} = {userL[Index_ItDir[it]]} WHERE ID = {ctx.author.id}")
+            else:
+                #can't find user, creat a new account
+                cursor.execute(f"INSERT INTO item({FieldL[0]}, {FieldL[1]}, {FieldL[2]}, {FieldL[3]}, {FieldL[4]}, {FieldL[5]}, {FieldL[6]}, {FieldL[7]}, {FieldL[8]}, {FieldL[9]}, {FieldL[10]}, {FieldL[11]}, {FieldL[12]}, {FieldL[13]}, {FieldL[14]}, {FieldL[15]}, {FieldL[16]})VALUES(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)")
+                userL = [0] * 18
+                userL[0] = ctx.author.id
+                it, num = mine()
+                userL[Index_ItDir[it]] += num
+                userL[16] += num*ItDir[it]
+                await ctx.send(f':pick: You pick up **{num}** **{Name_ItDir[it]}**!')
+                cursor.execute(f"UPDATE item SET {FieldL[0]} = {userL[0]}, {FieldL[16]} = {userL[16]}, {FieldL[Index_ItDir[it]]} = {userL[Index_ItDir[it]]} WHERE ID = 0")
+        cursor.execute(f"UPDATE item SET {FieldL[8]} = {userL[8] + 1} WHERE ID = {ctx.author.id}")
+        conn.commit()
+        conn.close
 
     @commands.group()
     @commands.cooldown(1, 10, commands.BucketType.user)

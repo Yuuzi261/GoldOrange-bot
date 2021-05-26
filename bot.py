@@ -11,7 +11,7 @@ intents = discord.Intents.all()
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
 
-bot = commands.Bot(command_prefix= '.', case_insensitive=True, intents = intents)
+bot = commands.Bot(command_prefix= '..', case_insensitive=True, intents = intents)
 
 def count(c):
     wb = load_workbook('cmdcount.xlsx')
