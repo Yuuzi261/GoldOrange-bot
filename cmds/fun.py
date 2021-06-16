@@ -8,6 +8,8 @@ import random
 import json
 import pymysql
 
+pymysql . install_as_MySQLdb ()
+
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
 
@@ -537,94 +539,74 @@ class Fun(Cog_Extension):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def ibag(self, ctx):
         count(ctx)
-        async with ctx.channel.typing():
-            if ws.get_value('A1') != '':
-                a = int(ws.get_value('A1'))
-                L = ws.get_col(1)[:a+1]
-                i = 1
-                for x in L[1:]:
-                    i+=1
-                    if str(x) == str(ctx.author.id):
-                        I = ['J', 'K', 'L', 'M', 'N', 'O', 'P']
-                        na = str(ctx.author)
-                        embed=discord.Embed(title=f'{na[:-5]}\'s items',color=0xffe26f)
+        conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
+        cursor = conn.cursor()
+        if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {ctx.author.id}"):
+            for r in cursor:
+                userL = list(r)
+            na = str(ctx.author)
+            embed=discord.Embed(title=f'{na[:-5]}\'s items',color=0xffe26f)
+            for i in range(9,16):
+                embed.add_field(name=f':small_orange_diamond: **{FieldL[i]}**', value=f'{userL[i]}', inline=False)
+        else:
+            await ctx.send(':x: You don\'t have an account, please type ".pick" first.')
 
-                        for it in I:
-                            embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=False)
-
-                        break
-                    else:
-                        if i == a+1:
-                            await ctx.send(':x: You don\'t have any property')
-            else:
-                await ctx.send(':x: can\'t find any user')
-
-            await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
+        conn.close
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def bag(self, ctx):
         count(ctx)
-        async with ctx.channel.typing():
-            if ws.get_value('A1') != '':
-                a = int(ws.get_value('A1'))
-                L = ws.get_col(1)[:a+1]
-                i = 1
-                for x in L[1:]:
-                    i+=1
-                    if str(x) == str(ctx.author.id):
-                        I = ['B', 'C', 'D', 'E', 'F', 'G']
-                        na = str(ctx.author)
-                        embed=discord.Embed(title=f'{na[:-5]}\'s backpack',color=0xffe26f)
+        conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
+        cursor = conn.cursor()
+        if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {ctx.author.id}"):
+            for r in cursor:
+                userL = list(r)
+            na = str(ctx.author)
+            embed=discord.Embed(title=f'{na[:-5]}\'s backpack',color=0xffe26f)
+            for i in range(1,7):
+                embed.add_field(name=f':small_orange_diamond: **{FieldL[i]}**', value=f'{userL[i]}', inline=False)
+        else:
+            await ctx.send(':x: You don\'t have an account, please type ".pick" first.')
 
-                        for it in I:
-                            embed.add_field(name=f':small_orange_diamond: **{ws.get_value(it + "1")}**', value=f'{ws.get_value(it + str(i))}', inline=False)
-
-                        break
-                    else:
-                        if i == a+1:
-                            await ctx.send(':x: You don\'t have any property')
-            else:
-                await ctx.send(':x: can\'t find any user')
-
-            await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
+        conn.close
 
     @commands.command()
     @commands.cooldown(2, 1800, commands.BucketType.user)
     async def pick(self, ctx):
         count(ctx)
-        async with ctx.channel.typing():
-            #DB
-            pymysql . install_as_MySQLdb ()
-            conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
-            cursor = conn.cursor()
-            if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {ctx.author.id}"):
-                for r in cursor:
-                    userL = list(r)
-                it, num = mine()
-                if userL[10] > 0:
-                    userL[10] -= 1
-                    num*=4
-                    await ctx.send(f':boom: You blasted a HUGE hole and you found **{num}** **{Name_ItDir[it]}**!(x4 income)')
-                elif userL[9] > 0:
-                    userL[9] -= 1
-                    num*=2
-                    await ctx.send(f':boom: You blasted a BIG hole and you found **{num}** **{Name_ItDir[it]}**!(x2 income)')
-                else:
-                    await ctx.send(f':pick: You pick up **{num}** **{Name_ItDir[it]}**!')
-                userL[Index_ItDir[it]] += num
-                userL[16] += num*ItDir[it]
-                cursor.execute(f"UPDATE item SET {FieldL[9]} = {userL[9]}, {FieldL[10]} = {userL[10]}, {FieldL[16]} = {userL[16]}, {FieldL[Index_ItDir[it]]} = {userL[Index_ItDir[it]]} WHERE ID = {ctx.author.id}")
+        conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
+        cursor = conn.cursor()
+        if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {ctx.author.id}"):
+            #found the user
+            for r in cursor:
+                userL = list(r)
+            it, num = mine()
+            if userL[10] > 0:
+                userL[10] -= 1
+                num*=4
+                await ctx.send(f':boom: You blasted a HUGE hole and you found **{num}** **{Name_ItDir[it]}**!(x4 income)')
+            elif userL[9] > 0:
+                userL[9] -= 1
+                num*=2
+                await ctx.send(f':boom: You blasted a BIG hole and you found **{num}** **{Name_ItDir[it]}**!(x2 income)')
             else:
-                #can't find user, creat a new account
-                cursor.execute(f"INSERT INTO item({FieldL[0]}, {FieldL[1]}, {FieldL[2]}, {FieldL[3]}, {FieldL[4]}, {FieldL[5]}, {FieldL[6]}, {FieldL[7]}, {FieldL[8]}, {FieldL[9]}, {FieldL[10]}, {FieldL[11]}, {FieldL[12]}, {FieldL[13]}, {FieldL[14]}, {FieldL[15]}, {FieldL[16]})VALUES(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)")
-                userL = [0] * 18
-                userL[0] = ctx.author.id
-                it, num = mine()
-                userL[Index_ItDir[it]] += num
-                userL[16] += num*ItDir[it]
                 await ctx.send(f':pick: You pick up **{num}** **{Name_ItDir[it]}**!')
-                cursor.execute(f"UPDATE item SET {FieldL[0]} = {userL[0]}, {FieldL[16]} = {userL[16]}, {FieldL[Index_ItDir[it]]} = {userL[Index_ItDir[it]]} WHERE ID = 0")
+            userL[Index_ItDir[it]] += num
+            userL[16] += num*ItDir[it]
+            cursor.execute(f"UPDATE item SET {FieldL[9]} = {userL[9]}, {FieldL[10]} = {userL[10]}, {FieldL[16]} = {userL[16]}, {FieldL[Index_ItDir[it]]} = {userL[Index_ItDir[it]]} WHERE ID = {ctx.author.id}")
+        else:
+            #can't find the user, creat a new account
+            cursor.execute(f"INSERT INTO item({FieldL[0]}, {FieldL[1]}, {FieldL[2]}, {FieldL[3]}, {FieldL[4]}, {FieldL[5]}, {FieldL[6]}, {FieldL[7]}, {FieldL[8]}, {FieldL[9]}, {FieldL[10]}, {FieldL[11]}, {FieldL[12]}, {FieldL[13]}, {FieldL[14]}, {FieldL[15]}, {FieldL[16]})VALUES(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)")
+            userL = [0] * 18
+            userL[0] = ctx.author.id
+            it, num = mine()
+            userL[Index_ItDir[it]] += num
+            userL[16] += num*ItDir[it]
+            await ctx.send(f':pick: You pick up **{num}** **{Name_ItDir[it]}**!')
+            cursor.execute(f"UPDATE item SET {FieldL[0]} = {userL[0]}, {FieldL[16]} = {userL[16]}, {FieldL[Index_ItDir[it]]} = {userL[Index_ItDir[it]]} WHERE ID = 0")
         cursor.execute(f"UPDATE item SET {FieldL[8]} = {userL[8] + 1} WHERE ID = {ctx.author.id}")
         conn.commit()
         conn.close
