@@ -468,72 +468,68 @@ class Fun(Cog_Extension):
     @commands.cooldown(2, 10800, commands.BucketType.user)
     async def rob(self, ctx, name: discord.Member):
         count(ctx)
-        async with ctx.channel.typing():
-            if ws.get_value('A1') != '':
-                a = int(ws.get_value('A1'))
-                L = ws.get_col(1)[:a+1]
-                i, j = 1, 1
-                isfind = False
-                for x in L[1:]:
-                    i+=1
-                    if str(x) == str(ctx.author.id):
-                        for y in L[1:]:
-                            j+=1
-                            if str(y) == str(name.id):
-                                isProps = 0
-                                if float(ws.get_value('H' + str(i))) < 20:
-                                    ws.update_value('H' + str(i), float(ws.get_value('H' + str(i))) + 0.5)
-                                    await ctx.send(f'<a:hand:732937258868539483> **{ctx.author}**\'s Robbery skills point + 0.5 ({ws.get_value("H" + str(i))}/20)')
-                                r = random.randint(1, 100)
-                                if r <= float(ws.get_value('H' + str(i))):
-                                    P = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-                                    p = random.choice(P)
-                                    if int(ws.get_value('N' + str(i))) == 1 and int(ws.get_value('P' + str(i))) > 0:
-                                        p = ws.get_value('B' + str(j))
-                                        isProps = 1
-                                    elif int(ws.get_value('M' + str(i))) == 1 and int(ws.get_value('O' + str(i))) > 0:
-                                        p = int(ws.get_value('B' + str(j)))//2
-                                        isProps = 2
-                                    elif int(ws.get_value('L' + str(i))) == 1:
-                                        p*=2
-                                        isProps = 3
+        victim = 0
+        conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
+        cursor = conn.cursor()
+        if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {ctx.author.id}"):
+            for r in cursor:
+                userL = list(r)
+            if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {name.id}"):
+                victim = 1
+                for r in cursor:
+                    victimL = list(r)
+                isProps = 0
+                if userL[7] < 20:
+                    userL[7] += 0.5
+                    await ctx.send(f'<a:hand:732937258868539483> **{ctx.author}**\'s Robbery skills point + 0.5 ({userL[7]}/20)')
+                r = random.randint(1, 100)
+                if r <= userL[7]:
+                    P = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+                    p = random.choice(P)
+                    if userL[14] == 1 and userL[15] > 0:
+                        p = victimL[1]
+                        isProps = 1
+                    elif userL[12] == 1 and userL[13] > 0:
+                        p = victimL[1]//2
+                        isProps = 2
+                    elif userL[11] == 1:
+                        p*=2
+                        isProps = 3
 
-                                    if isProps == 0:
-                                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)')
-                                    elif isProps == 1:
-                                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **MP5** so all the **{name}**\'s Gcoin was taken away meow!')
-                                    elif isProps == 2:
-                                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Desert Eagle** so half the **{name}**\'s Gcoin was taken away meow!')
-                                    else:
-                                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Knife** so **{ctx.author}** robbed 2x <:Gcoin:736650744861556749> meow!')
-
-                                    ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) + int(p))
-                                    ws.update_value('B' + str(j), int(ws.get_value('B' + str(j))) - int(p))
-                                    ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) + int(p))
-                                    ws.update_value('Q' + str(j), int(ws.get_value('Q' + str(j))) - int(p))
-
-
-
-                                else:
-                                    await ctx.send(f'<a:money:730029539815850045> **{ctx.author}** failed to rob the property form **{name}**\n:police_car: The MeowPolice took your property away meow~(200 <:Gcoin:736650744861556749>)')
-                                    ws.update_value('B' + str(i), int(ws.get_value('B' + str(i))) - 200)
-                                    ws.update_value('Q' + str(i), int(ws.get_value('Q' + str(i))) - 200)
-
-                                if int(ws.get_value('N' + str(i))) == 1 and int(ws.get_value('P' + str(i))) > 0:
-                                    ws.update_value('P' + str(i), int(ws.get_value('P' + str(i))) - 1)
-                                elif int(ws.get_value('M' + str(i))) == 1 and int(ws.get_value('O' + str(i))) > 0:
-                                    ws.update_value('O' + str(i), int(ws.get_value('O' + str(i))) - 1)
-                                isfind = True
-                                break
-                            else:
-                                if j == a+1:
-                                    isfind = True
-                                    await ctx.send(f':x: **{name}** didn\'t have an account meow!')
+                    if isProps == 0:
+                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)')
+                    elif isProps == 1:
+                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **MP5** so all the **{name}**\'s Gcoin was taken away meow!')
+                    elif isProps == 2:
+                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Desert Eagle** so half the **{name}**\'s Gcoin was taken away meow!')
                     else:
-                        if i == (a+1) and not(isfind):
-                            await ctx.send(':x: You don\'t have an account(enter .pick first meow!)')
+                        await ctx.send(f':money_with_wings: **{ctx.author}** robbed the property form **{name}** meow!!({p} <:Gcoin:736650744861556749>)\n<a:frog_gun:732828139499159625> Because **{ctx.author}** use **Knife** so **{ctx.author}** robbed 2x <:Gcoin:736650744861556749> meow!')
+
+                    userL[1] += p
+                    victimL[1] -= p
+                    userL[16] += p
+                    victimL[16] -= p
+
+                else:
+                    await ctx.send(f'<a:money:730029539815850045> **{ctx.author}** failed to rob the property form **{name}**\n:police_car: The MeowPolice took your property away meow~(200 <:Gcoin:736650744861556749>)')
+                    userL[1] -= 200
+                    userL[16] -= 200
+
+                if userL[14] == 1 and userL[15] > 0:
+                    userL[15] -= 1
+                elif userL[12] == 1 and userL[13] > 0:
+                    userL[13] -= 1
             else:
-                await ctx.send(':x: can\'t find any user')
+                await ctx.send(f':x: Can\'t find this account:{name}.')
+        else:
+            await ctx.send(':x: You don\'t have an account, please type ".pick" first.')
+
+        if victim == 1:
+            cursor.execute(f"UPDATE item SET {FieldL[1]} = {userL[1]}, {FieldL[7]} = {userL[7]}, {FieldL[13]} = {userL[13]}, {FieldL[15]} = {userL[15]}, {FieldL[16]} = {userL[16]} WHERE ID = {ctx.author.id}")
+            cursor.execute(f"UPDATE item SET {FieldL[1]} = {victimL[1]}, {FieldL[16]} = {victimL[16]} WHERE ID = {name.id}")
+            
+        conn.commit()
+        conn.close
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
