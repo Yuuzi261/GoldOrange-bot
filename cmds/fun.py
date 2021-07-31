@@ -467,7 +467,7 @@ class Fun(Cog_Extension):
     @commands.command()
     @commands.cooldown(2, 10800, commands.BucketType.user)
     async def rob(self, ctx, name: discord.Member):
-        count(ctx)
+        # count(ctx)
         victim = 0
         conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
         cursor = conn.cursor()
@@ -534,7 +534,7 @@ class Fun(Cog_Extension):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def ibag(self, ctx):
-        count(ctx)
+        # count(ctx)
         conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
         cursor = conn.cursor()
         if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {ctx.author.id}"):
@@ -553,7 +553,7 @@ class Fun(Cog_Extension):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def bag(self, ctx):
-        count(ctx)
+        # count(ctx)
         conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
         cursor = conn.cursor()
         if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {ctx.author.id}"):
@@ -572,7 +572,7 @@ class Fun(Cog_Extension):
     @commands.command()
     @commands.cooldown(2, 1800, commands.BucketType.user)
     async def pick(self, ctx):
-        count(ctx)
+        # count(ctx)
         conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
         cursor = conn.cursor()
         if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {ctx.author.id}"):
@@ -609,88 +609,62 @@ class Fun(Cog_Extension):
 
     @commands.group()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def sell(self, ctx):
-        global k
-        if ws.get_value('A1') != '':
-            a = int(ws.get_value('A1'))
-            L = ws.get_col(1)[:a+1]
-            i = 1
-            for x in L[1:]:
-                i+=1
-                if str(ws.get_value('A' + str(i))) == str(ctx.author.id):
-                    k = i
-                    break
-                else:
-                    if i == a+1:
-                        await ctx.send('You don\'t have any property')
+    async def sell(self, ctx, amount: int, obj):
+        # count(ctx)
+        obj = obj.lower()
+        conn = pymysql.connect(host = jdata["DB_host"], user = jdata["DB_user"], passwd = jdata["DB_password"], db = jdata["DB_name"])
+        cursor = conn.cursor()
+        if cursor.execute(f"SELECT * FROM item WHERE ID LIKE {ctx.author.id}"):
+            pass
         else:
-            await ctx.send('can\'t find any user')
-        embed=discord.Embed(title="Sell", color=0xffe26f)
+            await ctx.send(':x: You don\'t have an account, please type ".pick" first.')
 
-    @sell.command()
-    async def Copper(self, ctx, amount = None):
-        if amount != None:
-            amount = int(amount)
-            if amount > int(ws.get_value('C' + str(k))) or amount <= 0:
-                await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
-                return
-        else:
-            amount = int(ws.get_value('C' + str(k)))
-        ws.update_value('B' + str(k), int(ws.get_value('B' + str(k))) + amount*2)
-        ws.update_value('C' + str(k), int(ws.get_value('C' + str(k))) - amount)
-        await ctx.send(f'**:white_check_mark: {amount} Copper** sold successfully meow!')
+        for r in cursor:
+            userL = list(r)
 
-    @sell.command()
-    async def Silver(self, ctx, amount = None):
-        if amount != None:
-            amount = int(amount)
-            if amount > int(ws.get_value('D' + str(k))) or amount <= 0:
+        if obj == 'copper':
+            if amount > userL[2] or amount <= 0:
                 await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
-                return
-        else:
-            amount = int(ws.get_value('D' + str(k)))
-        ws.update_value('B' + str(k), int(ws.get_value('B' + str(k))) + amount*20)
-        ws.update_value('D' + str(k), int(ws.get_value('D' + str(k))) - amount)
-        await ctx.send(f'**:white_check_mark: {amount} Silver** sold successfully meow!')
-
-    @sell.command()
-    async def Gold(self, ctx, amount = None):
-        if amount != None:
-            amount = int(amount)
-            if amount > int(ws.get_value('E' + str(k))) or amount <= 0:
+            else:
+                userL[1] += amount*2
+                userL[2] -= amount
+                cursor.execute(f"UPDATE item SET {FieldL[1]} = {userL[1]}, {FieldL[2]} = {userL[2]} WHERE ID = {ctx.author.id}")
+                await ctx.send(f'**:white_check_mark: {amount} Copper** sold successfully meow!')
+        elif obj == 'silver':
+            if amount > userL[3] or amount <= 0:
                 await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
-                return
-        else:
-            amount = int(ws.get_value('E' + str(k)))
-        ws.update_value('B' + str(k), int(ws.get_value('B' + str(k))) + amount*200)
-        ws.update_value('E' + str(k), int(ws.get_value('E' + str(k))) - amount)
-        await ctx.send(f'**:white_check_mark: {amount} Gold** sold successfully meow!')
-
-    @sell.command()
-    async def Diamond(self, ctx, amount = None):
-        if amount != None:
-            amount = int(amount)
-            if amount > int(ws.get_value('F' + str(k))) or amount <= 0:
+            else:
+                userL[1] += amount*20
+                userL[3] -= amount
+                cursor.execute(f"UPDATE item SET {FieldL[1]} = {userL[1]}, {FieldL[3]} = {userL[3]} WHERE ID = {ctx.author.id}")
+                await ctx.send(f'**:white_check_mark: {amount} Silver** sold successfully meow!')
+        elif obj == 'gold':
+            if amount > userL[4] or amount <= 0:
                 await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
-                return
-        else:
-            amount = int(ws.get_value('F' + str(k)))
-        ws.update_value('B' + str(k), int(ws.get_value('B' + str(k))) + amount*2000)
-        ws.update_value('F' + str(k), int(ws.get_value('F' + str(k))) - amount)
-        await ctx.send(f'**:white_check_mark: {amount} Diamond** sold successfully meow!')
-
-    @sell.command()
-    async def MG(self, ctx, amount = None):
-        if amount != None:
-            amount = int(amount)
-            if amount > int(ws.get_value('G' + str(k))) or amount <= 0:
+            else:
+                userL[1] += amount*200
+                userL[4] -= amount
+                cursor.execute(f"UPDATE item SET {FieldL[1]} = {userL[1]}, {FieldL[4]} = {userL[4]} WHERE ID = {ctx.author.id}")
+                await ctx.send(f'**:white_check_mark: {amount} Gold** sold successfully meow!')
+        elif obj == 'diamond':
+            if amount > userL[5] or amount <= 0:
                 await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
-                return
-        else:
-            amount = int(ws.get_value('G' + str(k)))
-        ws.update_value('B' + str(k), int(ws.get_value('B' + str(k))) + amount*20000)
-        ws.update_value('G' + str(k), int(ws.get_value('G' + str(k))) - amount)
-        await ctx.send(f'**:white_check_mark: {amount} Miracle Gem** sold successfully meow!')
+            else:
+                userL[1] += amount*2000
+                userL[5] -= amount
+                cursor.execute(f"UPDATE item SET {FieldL[1]} = {userL[1]}, {FieldL[5]} = {userL[5]} WHERE ID = {ctx.author.id}")
+                await ctx.send(f'**:white_check_mark: {amount} Diamond** sold successfully meow!')
+        elif obj == 'mg':
+            if amount > userL[6] or amount <= 0:
+                await ctx.send(f':x: You DON\'T HAVE so many treasures meow!!')
+            else:
+                userL[1] += amount*20000
+                userL[6] -= amount
+                cursor.execute(f"UPDATE item SET {FieldL[1]} = {userL[1]}, {FieldL[6]} = {userL[6]} WHERE ID = {ctx.author.id}")
+                await ctx.send(f'**:white_check_mark: {amount} Miracle Gem** sold successfully meow!')
+        
+        conn.commit()
+        conn.close
 
 
 def setup(bot):
